@@ -27,6 +27,7 @@ html {
 
 body {
   margin: 0;
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -114,6 +115,12 @@ body {
   min-height: 1.2em;
   color: #13294B;
   letter-spacing: 0.02em;
+  text-decoration: none !important;
+}
+
+.logo a,
+.logo span {
+  text-decoration: none !important;
 }
 
 .logo-cursor {
@@ -139,6 +146,10 @@ body {
 .hero {
   position: relative;
   z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   animation: heroFade 0.6s ease-out;
 }
