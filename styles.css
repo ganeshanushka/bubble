@@ -1,0 +1,270 @@
+/* --- Variables --- */
+:root {
+  --bg-deep: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.6);
+  --accent: #22d3ee;
+  --accent-dim: rgba(34, 211, 238, 0.4);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: rgba(148, 163, 184, 0.2);
+  --pop: #f472b6;
+  --font: 'Outfit', system-ui, sans-serif;
+  --radius: 1.25rem;
+  --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Reset & base --- */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* --- Animated background bubbles --- */
+.bg-bubbles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 60%, rgba(244, 114, 182, 0.08), transparent),
+    radial-gradient(ellipse 50% 30% at 10% 80%, rgba(34, 211, 238, 0.06), transparent);
+  pointer-events: none;
+}
+
+.bg-bubbles::before,
+.bg-bubbles::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+  animation: float 20s ease-in-out infinite;
+}
+.bg-bubbles::before { top: 10%; left: 5%; animation-delay: -5s; }
+.bg-bubbles::after { bottom: 20%; right: 10%; animation-delay: -10s; }
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* --- Layout --- */
+.header, .main, .footer {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.header {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.25rem;
+  font-weight: 400;
+  margin: 0;
+  min-height: 1.2em;
+  color: var(--accent);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .logo {
+    color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--pop));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+.logo-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 2px;
+  vertical-align: -0.05em;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+.logo.logo-done .logo-cursor {
+  display: none;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  animation: heroFade 0.6s ease-out;
+}
+
+@keyframes heroFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tagline {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+.main {
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+}
+
+/* --- Add bubble form --- */
+.add-bubble {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.bubble-input {
+  flex: 1;
+  padding: 0.875rem 1.25rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.bubble-input::placeholder {
+  color: var(--text-muted);
+}
+
+.bubble-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.btn-add {
+  padding: 0.875rem 1.5rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--bg-deep);
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.35);
+}
+
+.btn-add:active {
+  transform: translateY(0);
+}
+
+/* --- Bubbles list --- */
+.bubbles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  max-width: 220px;
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  text-align: center;
+  word-break: break-word;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  animation: bubbleIn 0.4s ease-out;
+}
+
+.bubble:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-dim);
+  transform: scale(1.03);
+}
+
+.bubble.popping {
+  animation: pop 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.hint {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* --- Footer --- */
+.footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --- Empty state --- */
+.bubbles-container:empty + .hint {
+  margin-top: 3rem;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#22d3ee" />
+  <title>Bubble</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="hero">
+    <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span></h1>
+  </div>
+  <script>
+    (function () {
+      var logoEl = document.getElementById('logoText');
+      var logoTitle = document.querySelector('.logo');
+      var word = 'Bubble';
+      var i = 0;
+      function type() {
+        if (logoEl && logoTitle && i < word.length) {
+          logoEl.textContent += word[i];
+          i++;
+          setTimeout(type, 320);
+        } else if (logoTitle) {
+          logoTitle.classList.add('logo-done');
+        }
+      }
+      setTimeout(type, 800);
+    })();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
