@@ -75,6 +75,41 @@
         <p class="footer-terms">By continuing, you agree to the updated <a href="#">Terms of Service</a>, and <a
             href="#">Privacy Policy</a>.</p>
       </div>
+
+      <div id="step-3" class="hidden text-left">
+        <h2>Create an account</h2>
+        <p class="subtitle">Looks like you're new here! Let's get started.</p>
+
+        <form id="signupForm" class="login-form">
+          <div class="input-group">
+            <label class="font-bold">Email Address</label>
+            <div class="email-edit-group">
+              <input type="email" id="disabledEmailSignup" class="bubble-input disabled-input" readonly>
+              <button type="button" id="editBtnSignup" class="edit-btn">Edit</button>
+            </div>
+          </div>
+
+          <div class="input-group mt-3">
+            <label class="font-bold">Create Password</label>
+            <div class="password-group">
+              <input type="password" id="signupPasswordInput" class="bubble-input" required>
+              <button type="button" class="toggle-password" id="toggleSignupPasswordBtn">
+                <svg viewBox="0 0 24 24" fill="none" class="eye-icon">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-add mt-3">Sign up</button>
+        </form>
+
+        <p class="footer-terms">By creating an account, you agree to the <a href="#">Terms of Service</a> and <a
+            href="#">Privacy Policy</a>.</p>
+      </div>
     </div>
   </div>
 
@@ -157,24 +192,41 @@
 
       var step1 = document.getElementById('step-1');
       var step2 = document.getElementById('step-2');
+      var step3 = document.getElementById('step-3');
       var disabledEmail = document.getElementById('disabledEmail');
+      var disabledEmailSignup = document.getElementById('disabledEmailSignup');
       var editBtn = document.getElementById('editBtn');
+      var editBtnSignup = document.getElementById('editBtnSignup');
       var closeBtn = document.getElementById('closeBtn');
 
       if (emailForm) {
         emailForm.addEventListener('submit', function (e) {
           e.preventDefault();
           var email = emailInput.value.trim().toLowerCase();
+
           if (!email.endsWith('.edu')) {
+            emailError.textContent = "Please enter a valid .edu email address.";
             emailError.classList.remove('hidden');
             emailInput.classList.add('input-error');
-          } else {
+            return;
+          }
+
+          if (email === 'anushkag@unc.edu') {
             emailError.classList.add('hidden');
             emailInput.classList.remove('input-error');
-            // Transition to step 2
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             disabledEmail.value = email;
+          } else if (email === 'emisang@unc.edu') {
+            emailError.classList.add('hidden');
+            emailInput.classList.remove('input-error');
+            step1.classList.add('hidden');
+            step3.classList.remove('hidden');
+            disabledEmailSignup.value = email;
+          } else {
+            emailError.textContent = "Email not recognized. Please use anushkag@unc.edu or emisang@unc.edu for this demo.";
+            emailError.classList.remove('hidden');
+            emailInput.classList.add('input-error');
           }
         });
       }
@@ -183,6 +235,14 @@
         editBtn.addEventListener('click', function (e) {
           e.preventDefault();
           step2.classList.add('hidden');
+          step1.classList.remove('hidden');
+        });
+      }
+
+      if (editBtnSignup) {
+        editBtnSignup.addEventListener('click', function (e) {
+          e.preventDefault();
+          step3.classList.add('hidden');
           step1.classList.remove('hidden');
         });
       }
@@ -203,6 +263,19 @@
             passwordInput.type = 'text';
           } else {
             passwordInput.type = 'password';
+          }
+        });
+      }
+
+      var toggleSignupPasswordBtn = document.getElementById('toggleSignupPasswordBtn');
+      var signupPasswordInput = document.getElementById('signupPasswordInput');
+      if (toggleSignupPasswordBtn && signupPasswordInput) {
+        toggleSignupPasswordBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (signupPasswordInput.type === 'password') {
+            signupPasswordInput.type = 'text';
+          } else {
+            signupPasswordInput.type = 'password';
           }
         });
       }
