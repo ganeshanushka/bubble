@@ -79,7 +79,7 @@
         // Add popping animation to main bubble
         bubbleWrap.classList.add('popping-main');
 
-        // Wait for bubble to pop, then clear screen and show popup
+        // Wait for bubble to completely pop (pop animation is 450ms), then clear screen and show popup
         setTimeout(function () {
           var hero = document.querySelector('.hero');
           if (hero) hero.classList.add('fade-out');
@@ -91,7 +91,7 @@
             var loginPopup = document.getElementById('loginPopup');
             if (loginPopup) loginPopup.classList.remove('hidden');
           }, 400); // Wait for fade out
-        }, 450); // Slightly before pop finishes
+        }, 550); // Give the pop animation more than enough time to finish before fading container
       });
 
     })();
