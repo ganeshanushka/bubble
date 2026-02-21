@@ -15,10 +15,13 @@
 <body>
   <div class="float-bubbles" id="floatBubbles" aria-hidden="true"></div>
   <div class="hero">
-    <div class="bubble-wrap" id="bubbleWrap">
+    <a href="#main" class="bubble-wrap" id="bubbleWrap" aria-label="Go to main page">
       <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span></h1>
-    </div>
+    </a>
   </div>
+  <main id="main" class="main">
+    <p class="main-welcome">Welcome to Bubble.</p>
+  </main>
   <script>
     (function () {
       var logoEl = document.getElementById('logoText');
