@@ -491,10 +491,10 @@ body {
 
 .popup-box {
   position: relative;
-  width: 90vw;
-  max-width: 500px;
+  width: 92vw;
+  max-width: 550px;
   aspect-ratio: 1 / 1;
-  padding: 4rem;
+  padding: 5rem 4.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -662,8 +662,8 @@ body {
 /* --- Step 2 Login Popup Styles --- */
 .close-btn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 3.5rem;
+  right: 3.5rem;
   font-family: var(--font);
   font-size: 1.5rem;
   font-weight: 800;
