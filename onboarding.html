@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble - Welcome</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Adjust popup for larger form */
+        .popup-box {
+            aspect-ratio: auto;
+            border-radius: 2rem;
+            padding: 3rem;
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrap">
+        <div class="hero">
+            <h1 class="logo logo-done">Bubble</h1>
+        </div>
+    </div>
+
+    <div id="floatBubbles" class="float-bubbles" style="display: none;"></div>
+
+    <!-- Onboarding Popup -->
+    <div class="popup-overlay fade-in">
+        <div class="popup-box">
+            <div class="text-left">
+                <h2>Tell us about yourself</h2>
+                <p class="subtitle" style="margin-bottom: 1.5rem;">We'll use this to match you with connections.</p>
+
+                <form id="onboardingForm" class="login-form">
+                    <div class="input-group">
+                        <label class="font-bold">Full Name</label>
+                        <input type="text" id="nameInput" class="bubble-input" required>
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <label class="font-bold">Age</label>
+                        <input type="number" id="ageInput" class="bubble-input" min="16" max="150" required>
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <label class="font-bold">Gender</label>
+                        <select id="genderInput" class="bubble-input" required style="appearance: none;">
+                            <option value="" disabled selected>Select gender</option>
+                            <option value="Woman">Woman</option>
+                            <option value="Man">Man</option>
+                            <option value="Non-binary">Non-binary</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <label class="font-bold">Secondary Email</label>
+                        <input type="email" id="secondaryEmailInput" class="bubble-input" placeholder="Optional">
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <label class="font-bold">Phone Number</label>
+                        <input type="tel" id="phoneInput" class="bubble-input" required>
+                    </div>
+
+                    <button type="submit" class="btn-add mt-4" style="width: 100%;">Complete Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.body.classList.add('bubble-done');
+        document.getElementById('onboardingForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Redirect to profiles after onboarding completion
+            window.location.href = 'profiles.html';
+        });
+    </script>
+</body>
+
+</html>

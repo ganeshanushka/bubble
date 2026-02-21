@@ -334,6 +334,14 @@
             signupSubmitBtn.classList.remove('btn-add');
           }
         });
+
+        var signupForm = document.getElementById('signupForm');
+        if (signupForm) {
+          signupForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            window.location.href = 'onboarding.html';
+          });
+        }
       }
 
     })();
