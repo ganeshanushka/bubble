@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -12,15 +13,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="float-bubbles" id="floatBubbles" aria-hidden="true"></div>
   <div class="hero">
     <a href="#main" class="bubble-wrap" id="bubbleWrap" aria-label="Go to main page">
-      <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span></h1>
+      <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span>
+      </h1>
     </a>
   </div>
   <main id="main" class="main">
   </main>
+
+  <div id="loginPopup" class="popup-overlay hidden">
+    <div class="popup-box">
+      <h2>Welcome Back</h2>
+      <form class="login-form">
+        <input type="email" placeholder="Email" class="bubble-input" required>
+        <input type="password" placeholder="Password" class="bubble-input" required>
+        <button type="submit" class="btn-add">Log In</button>
+      </form>
+      <p class="signup-link">Don't have an account? <a href="#">Sign Up</a></p>
+    </div>
+  </div>
+
   <script>
     (function () {
       var logoEl = document.getElementById('logoText');
@@ -52,8 +68,35 @@
         }
       }
       setTimeout(type, 800);
+
+      // Handle main bubble click
+      bubbleWrap.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Prevent further clicks
+        bubbleWrap.style.pointerEvents = 'none';
+
+        // Add popping animation to main bubble
+        bubbleWrap.classList.add('popping-main');
+
+        // Wait for bubble to pop, then clear screen and show popup
+        setTimeout(function () {
+          var hero = document.querySelector('.hero');
+          if (hero) hero.classList.add('fade-out');
+          if (floatContainer) floatContainer.classList.add('fade-out');
+
+          setTimeout(function () {
+            if (hero) hero.style.display = 'none';
+            if (floatContainer) floatContainer.style.display = 'none';
+            var loginPopup = document.getElementById('loginPopup');
+            if (loginPopup) loginPopup.classList.remove('hidden');
+          }, 400); // Wait for fade out
+        }, 450); // Slightly before pop finishes
+      });
+
     })();
   </script>
   <script src="app.js"></script>
 </body>
+
 </html>
