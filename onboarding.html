@@ -167,6 +167,30 @@
                         <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555" required>
                         <div class="btn-group">
                             <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: School -->
+                    <div class="step-container" id="ob-step-6">
+                        <h2 class="question-title">What school do you attend?</h2>
+                        <p class="question-desc">Help us find students on your campus.</p>
+                        <input type="text" id="schoolInput" class="bubble-input" placeholder="e.g. UNC Chapel Hill"
+                            required>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 7: Major -->
+                    <div class="step-container" id="ob-step-7">
+                        <h2 class="question-title">What's your major?</h2>
+                        <p class="question-desc">Find peers with similar academic interests.</p>
+                        <input type="text" id="majorInput" class="bubble-input" placeholder="e.g. Computer Science"
+                            required>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
                             <button type="submit" class="btn-add" style="flex: 1;">Complete Profile</button>
                         </div>
                     </div>
@@ -182,7 +206,7 @@
 
         // Typeform logic
         var currentStep = 1;
-        var totalSteps = 5;
+        var totalSteps = 7;
         var progressFill = document.getElementById('progressFill');
 
         function showStep(step) {
