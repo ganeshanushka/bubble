@@ -78,11 +78,10 @@
 
       <div id="step-3" class="hidden text-left">
         <h2>Create an account</h2>
-        <p class="subtitle">Looks like you're new here! Let's get started.</p>
 
-        <form id="signupForm" class="login-form">
+        <form id="signupForm" class="login-form mt-4">
           <div class="input-group">
-            <label class="font-bold">Email Address</label>
+            <label class="font-bold">Email</label>
             <div class="email-edit-group">
               <input type="email" id="disabledEmailSignup" class="bubble-input disabled-input" readonly>
               <button type="button" id="editBtnSignup" class="edit-btn">Edit</button>
@@ -90,7 +89,7 @@
           </div>
 
           <div class="input-group mt-3">
-            <label class="font-bold">Create Password</label>
+            <label class="font-bold">Password</label>
             <div class="password-group">
               <input type="password" id="signupPasswordInput" class="bubble-input" required>
               <button type="button" class="toggle-password" id="toggleSignupPasswordBtn">
@@ -104,7 +103,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-add mt-3">Sign up</button>
+          <button type="submit" class="btn-disabled mt-3" disabled>Create account</button>
         </form>
 
         <p class="footer-terms">By creating an account, you agree to the <a href="#">Terms of Service</a> and <a

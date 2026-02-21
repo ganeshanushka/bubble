@@ -327,6 +327,18 @@ body {
   transform: translateY(0);
 }
 
+.btn-disabled {
+  padding: 0.875rem 1.5rem;
+  font-family: var(--font);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #e5e5e5;
+  border: none;
+  border-radius: var(--radius);
+  cursor: not-allowed;
+}
+
 /* --- Bubbles list --- */
 .bubbles-container {
   display: flex;
