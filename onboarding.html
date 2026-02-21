@@ -175,8 +175,11 @@
                     <div class="step-container" id="ob-step-6">
                         <h2 class="question-title">What school do you attend?</h2>
                         <p class="question-desc">Help us find students on your campus.</p>
-                        <input type="text" id="schoolInput" class="bubble-input" placeholder="e.g. UNC Chapel Hill"
-                            required>
+                        <input list="collegesList" type="text" id="schoolInput" class="bubble-input"
+                            placeholder="Search for your college..." required>
+                        <datalist id="collegesList">
+                            <!-- Populated by JS -->
+                        </datalist>
                         <div class="btn-group">
                             <button type="button" class="btn-add btn-secondary back-btn">Back</button>
                             <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
@@ -223,6 +226,29 @@
 
         // Initial setup
         showStep(currentStep);
+
+        // Fetch USA colleges and populate datalist
+        document.addEventListener('DOMContentLoaded', function () {
+            var datalist = document.getElementById('collegesList');
+            if (datalist) {
+                // Using a known free public API for universities
+                fetch('http://universities.hipolabs.com/search?country=United+States')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Extract unique names
+                        const uniqueSchools = [...new Set(data.map(item => item.name))];
+                        // Sort alphabetically
+                        uniqueSchools.sort();
+
+                        uniqueSchools.forEach(school => {
+                            var option = document.createElement('option');
+                            option.value = school;
+                            datalist.appendChild(option);
+                        });
+                    })
+                    .catch(err => console.error('Error fetching colleges:', err));
+            }
+        });
 
         document.querySelectorAll('.next-btn').forEach(btn => {
             btn.addEventListener('click', function (e) {
