@@ -79,6 +79,20 @@
         // Add popping animation to main bubble
         bubbleWrap.classList.add('popping-main');
 
+        // Create spray effect
+        var hero = document.querySelector('.hero');
+        if (hero) {
+          for (var s = 0; s < 25; s++) {
+            var drop = document.createElement('div');
+            drop.className = 'spray-drop';
+            var angle = Math.random() * Math.PI * 2;
+            var velocity = 150 + Math.random() * 250;
+            drop.style.setProperty('--tx', (Math.cos(angle) * velocity) + 'px');
+            drop.style.setProperty('--ty', (Math.sin(angle) * velocity) + 'px');
+            hero.appendChild(drop);
+          }
+        }
+
         // Wait for bubble to completely pop (pop animation is 450ms)
         setTimeout(function () {
           var hero = document.querySelector('.hero');
