@@ -171,7 +171,9 @@
           } else {
             emailError.classList.add('hidden');
             emailInput.classList.remove('input-error');
-            // Transition to step 2
+            // Transition to step 2 – use bigger circle so all content fits
+            var popupBox = document.querySelector('.popup-box');
+            if (popupBox) popupBox.classList.add('popup-step-2');
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             disabledEmail.value = email;
@@ -182,6 +184,8 @@
       if (editBtn) {
         editBtn.addEventListener('click', function (e) {
           e.preventDefault();
+          var popupBox = document.querySelector('.popup-box');
+          if (popupBox) popupBox.classList.remove('popup-step-2');
           step2.classList.add('hidden');
           step1.classList.remove('hidden');
         });
