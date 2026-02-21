@@ -295,6 +295,18 @@
             e.preventDefault();
             // Only proceed if native validation passes
             if (this.checkValidity()) {
+                // Save profile data
+                const profileData = {
+                    name: document.getElementById('nameInput').value,
+                    age: document.getElementById('ageInput').value,
+                    gender: document.getElementById('genderInput').value,
+                    secondaryEmail: document.getElementById('secondaryEmailInput').value,
+                    phone: document.getElementById('phoneInput').value,
+                    school: document.getElementById('schoolInput').value,
+                    major: document.getElementById('majorInput').value
+                };
+                localStorage.setItem('bubble_user_profile', JSON.stringify(profileData));
+
                 window.location.href = 'profiles.html';
             }
         });

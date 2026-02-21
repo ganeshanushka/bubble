@@ -112,23 +112,28 @@
                     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
                         alt="Anushka" style="filter: grayscale(20%);">
                 </div>
-                <h1 class="my-profile-name">Anushka Ganesh</h1>
+                <h1 class="my-profile-name" id="myProfileName">Anushka Ganesh</h1>
 
                 <div
                     style="margin: 2rem 0; text-align: left; background: rgba(255,255,255,0.5); padding: 1.5rem; border-radius: 1rem;">
-                    <p class="my-profile-detail"><span class="detail-label">Age:</span> 20</p>
-                    <p class="my-profile-detail"><span class="detail-label">Gender:</span> Woman</p>
-                    <p class="my-profile-detail"><span class="detail-label">School:</span> UNC Chapel Hill</p>
-                    <p class="my-profile-detail"><span class="detail-label">Major:</span> Computer Science</p>
+                    <p class="my-profile-detail"><span class="detail-label">Age:</span> <span id="myAge">20</span></p>
+                    <p class="my-profile-detail"><span class="detail-label">Gender:</span> <span
+                            id="myGender">Woman</span></p>
+                    <p class="my-profile-detail"><span class="detail-label">School:</span> <span id="mySchool">UNC
+                            Chapel Hill</span></p>
+                    <p class="my-profile-detail"><span class="detail-label">Major:</span> <span id="myMajor">Computer
+                            Science</span></p>
                     <p class="my-profile-detail"><span class="detail-label">University Email:</span> anushkag@unc.edu
                     </p>
-                    <p class="my-profile-detail"><span class="detail-label">Secondary Email:</span> aganesh@gmail.com
+                    <p class="my-profile-detail"><span class="detail-label">Secondary Email:</span> <span
+                            id="mySecondaryEmail">aganesh@gmail.com</span>
                     </p>
-                    <p class="my-profile-detail"><span class="detail-label">Phone:</span> (555) 123-4567</p>
+                    <p class="my-profile-detail"><span class="detail-label">Phone:</span> <span id="myPhone">(555)
+                            123-4567</span></p>
                 </div>
 
                 <button class="btn-add btn-connect">Edit Profile</button>
-                <button class="btn-add logout-btn" onclick="window.location.href='index.html'">Log out</button>
+                <button class="btn-add logout-btn" onclick="handleLogout()">Log out</button>
             </div>
         </div>
     </div>
@@ -138,6 +143,25 @@
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Load data from localStorage
+        const storedProfile = localStorage.getItem('bubble_user_profile');
+        if (storedProfile) {
+            const profile = JSON.parse(storedProfile);
+            if (profile.name) document.getElementById('myProfileName').textContent = profile.name;
+            if (profile.age) document.getElementById('myAge').textContent = profile.age;
+            if (profile.gender) document.getElementById('myGender').textContent = profile.gender;
+            if (profile.school) document.getElementById('mySchool').textContent = profile.school;
+            if (profile.major) document.getElementById('myMajor').textContent = profile.major;
+            if (profile.secondaryEmail) document.getElementById('mySecondaryEmail').textContent = profile.secondaryEmail;
+            if (profile.phone) document.getElementById('myPhone').textContent = profile.phone;
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('bubble_user_profile');
+            window.location.href = 'index.html';
+        }
+
         var floatContainer = document.getElementById('floatBubbles');
         if (floatContainer) {
             for (var b = 0; b < 18; b++) {

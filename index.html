@@ -39,7 +39,8 @@
       </div>
 
       <div id="step-2" class="hidden text-left">
-        <button type="button" class="close-btn" id="backToLoginBtn" aria-label="Back to log in or create account">X</button>
+        <button type="button" class="close-btn" id="backToLoginBtn"
+          aria-label="Back to log in or create account">X</button>
         <h2>Welcome back!</h2>
         <p class="subtitle">Enter your password to log in.</p>
 
@@ -66,6 +67,10 @@
               </button>
             </div>
           </div>
+
+          <p id="loginError" class="error-msg hidden"
+            style="margin-top: 0.5rem; font-size: 0.9rem; font-weight: 400; text-align: left;">Incorrect password.
+            Please try again.</p>
 
           <a href="#" class="forgot-pwd">Forgot your password?</a>
           <button type="submit" class="btn-add">Log in</button>
@@ -210,6 +215,35 @@
           } else {
             passwordInput.type = 'password';
           }
+        });
+      }
+
+      var passwordForm = document.getElementById('passwordForm');
+      var loginError = document.getElementById('loginError');
+
+      if (passwordForm) {
+        passwordForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = disabledEmail.value.toLowerCase();
+          var pwd = passwordInput.value;
+
+          if (email === "anushkag@unc.edu") {
+            if (pwd === "Nothing23") {
+              window.location.href = 'profiles.html';
+            } else {
+              loginError.classList.remove('hidden');
+              passwordInput.classList.add('input-error');
+            }
+          } else {
+            window.location.href = 'onboarding.html';
+          }
+        });
+      }
+
+      if (passwordInput) {
+        passwordInput.addEventListener('input', function () {
+          loginError.classList.add('hidden');
+          passwordInput.classList.remove('input-error');
         });
       }
 

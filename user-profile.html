@@ -209,9 +209,9 @@
                 ← Back to Feed
             </a>
             <div style="flex-grow: 1;"></div>
-            <a href="my-profile.html" class="profile-btn">
-                Anushka
-                <div class="profile-btn-avatar">A</div>
+            <a href="my-profile.html" class="profile-btn" id="profileNavBtn">
+                <span id="navUserName">Anushka</span>
+                <div class="profile-btn-avatar" id="navUserAvatar">A</div>
             </a>
         </nav>
 
@@ -219,11 +219,12 @@
             <!-- Header section -->
             <div class="user-header-card">
                 <div class="user-profile-img">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
-                        alt="Isabella">
+                    <img id="profileImg"
+                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
+                        alt="User">
                 </div>
-                <h1 class="user-name">Isabella</h1>
-                <div class="user-demographics">
+                <h1 class="user-name" id="userName">Isabella</h1>
+                <div class="user-demographics" id="userDemographics">
                     21 • She/Her, Woman
                 </div>
             </div>
@@ -234,12 +235,12 @@
                 <div class="left-column">
                     <div class="info-box">
                         <div class="info-label">Major</div>
-                        <div class="info-value">Psychology</div>
+                        <div class="info-value" id="userMajor">Psychology</div>
                     </div>
 
                     <div class="info-box">
                         <div class="info-label">School</div>
-                        <div class="info-value">UNC Chapel Hill</div>
+                        <div class="info-value" id="userSchool">UNC Chapel Hill</div>
                     </div>
 
                     <button class="btn-chat">
@@ -251,7 +252,7 @@
                 <div class="right-column">
                     <div class="info-box bio-box">
                         <div class="info-label">Bio</div>
-                        <p class="bio-text">
+                        <p class="bio-text" id="userBio">
                             Coffee addict, reading in the quad, always exploring vintage shops down on Franklin street.
                             I'm typically easy-going and always looking for a new study buddy or someone to grab food
                             with!
@@ -273,7 +274,7 @@
                     </div>
                     <div>
                         <div class="info-label" style="font-size: 0.8rem; margin-bottom: 0;">Proximity</div>
-                        <div style="font-weight: 500;">0.8 miles away</div>
+                        <div style="font-weight: 500;" id="userProximity">0.8 miles away</div>
                     </div>
                 </div>
 
@@ -288,7 +289,7 @@
                     </div>
                     <div>
                         <div class="info-label" style="font-size: 0.8rem; margin-bottom: 0;">Email</div>
-                        <div style="font-weight: 500;">isabella@unc.edu</div>
+                        <div style="font-weight: 500;" id="userEmail">isabella@unc.edu</div>
                     </div>
                 </div>
 
@@ -303,7 +304,7 @@
                     </div>
                     <div>
                         <div class="info-label" style="font-size: 0.8rem; margin-bottom: 0;">Phone</div>
-                        <div style="font-weight: 500;">(555) 987-6543</div>
+                        <div style="font-weight: 500;" id="userPhone">(555) 987-6543</div>
                     </div>
                 </div>
             </div>
@@ -316,6 +317,77 @@
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Update Nav from LocalStorage
+        const storedProfile = localStorage.getItem('bubble_user_profile');
+        if (storedProfile) {
+            const profile = JSON.parse(storedProfile);
+            if (profile.name) {
+                document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
+                document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
+            }
+        }
+
+        // Contextual Content Logic
+        const users = {
+            isabella: {
+                name: 'Isabella',
+                age: 21,
+                pronouns: 'She/Her',
+                gender: 'Woman',
+                major: 'Psychology',
+                school: 'UNC Chapel Hill',
+                bio: 'Coffee addict, reading in the quad, always exploring vintage shops down on Franklin street. I\'m typically easy-going and always looking for a new study buddy or someone to grab food with! Also an absolute fanatic for indie rock shows and late night ice cream runs. Come say hi!',
+                proximity: '0.8 miles away',
+                email: 'isabella@unc.edu',
+                phone: '(555) 987-6543',
+                img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            liam: {
+                name: 'Liam',
+                age: 22,
+                pronouns: 'He/Him',
+                gender: 'Man',
+                major: 'Computer Science',
+                school: 'UNC Chapel Hill',
+                bio: 'Hackathons, climbing gym, and building pointless apps. Let\'s code. I spend most of my time in Sitterson Hall or looking for the best tacos in town. Always down for a quick hike or a deep dive into some obscure tech. Let\'s build something cool together.',
+                proximity: '1.2 miles away',
+                email: 'liam@unc.edu',
+                phone: '(555) 234-5678',
+                img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            sophia: {
+                name: 'Sophia',
+                age: 20,
+                pronouns: 'She/They',
+                gender: 'Woman',
+                major: 'Architecture',
+                school: 'UNC Chapel Hill',
+                bio: 'Model building at 3 AM. Looking for study buddies who bring snacks. Architecture is life, but I make time for photography and pottery. I love finding hidden architectural gems around campus and sketching in different libraries. If you have a good playlist, we\'ll get along just fine.',
+                proximity: '0.5 miles away',
+                email: 'sophia@unc.edu',
+                phone: '(555) 345-6789',
+                img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200'
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userKey = urlParams.get('user');
+
+        if (userKey && users[userKey]) {
+            const u = users[userKey];
+            document.getElementById('userName').textContent = u.name;
+            document.getElementById('userDemographics').textContent = `${u.age} • ${u.pronouns}, ${u.gender}`;
+            document.getElementById('userMajor').textContent = u.major;
+            document.getElementById('userSchool').textContent = u.school;
+            document.getElementById('userBio').textContent = u.bio;
+            document.getElementById('userProximity').textContent = u.proximity;
+            document.getElementById('userEmail').textContent = u.email;
+            document.getElementById('userPhone').textContent = u.phone;
+            document.getElementById('profileImg').src = u.img;
+            document.getElementById('profileImg').alt = u.name;
+        }
+
         var floatContainer = document.getElementById('floatBubbles');
         if (floatContainer) {
             for (var b = 0; b < 18; b++) {

@@ -13,9 +13,9 @@
 <body>
     <div class="app-wrap">
         <nav class="top-nav fade-in">
-            <a href="my-profile.html" class="profile-btn">
-                Anushka
-                <div class="profile-btn-avatar">A</div>
+            <a href="my-profile.html" class="profile-btn" id="profileNavBtn">
+                <span id="navUserName">Anushka</span>
+                <div class="profile-btn-avatar" id="navUserAvatar">A</div>
             </a>
         </nav>
 
@@ -27,7 +27,7 @@
         <div class="profiles-container fade-in" style="animation-delay: 0.3s;">
 
             <!-- Profile 1 -->
-            <a href="user-profile.html" style="text-decoration: none; color: inherit; display: contents;">
+            <a href="user-profile.html?user=isabella" style="text-decoration: none; color: inherit; display: contents;">
                 <div class="profile-card" style="cursor: pointer;">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
@@ -41,7 +41,7 @@
             </a>
 
             <!-- Profile 2 -->
-            <a href="user-profile.html" style="text-decoration: none; color: inherit; display: contents;">
+            <a href="user-profile.html?user=liam" style="text-decoration: none; color: inherit; display: contents;">
                 <div class="profile-card" style="cursor: pointer;">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
@@ -55,7 +55,7 @@
             </a>
 
             <!-- Profile 3 -->
-            <a href="user-profile.html" style="text-decoration: none; color: inherit; display: contents;">
+            <a href="user-profile.html?user=sophia" style="text-decoration: none; color: inherit; display: contents;">
                 <div class="profile-card" style="cursor: pointer;">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
@@ -76,6 +76,17 @@
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Update Nav from LocalStorage
+        const storedProfile = localStorage.getItem('bubble_user_profile');
+        if (storedProfile) {
+            const profile = JSON.parse(storedProfile);
+            if (profile.name) {
+                document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
+                document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
+            }
+        }
+
         var floatContainer = document.getElementById('floatBubbles');
         if (floatContainer) {
             for (var b = 0; b < 18; b++) {
