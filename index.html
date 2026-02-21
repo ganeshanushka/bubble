@@ -103,7 +103,14 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-disabled mt-3" disabled>Create account</button>
+          <ul class="pwd-requirements">
+            <li id="reqLength" class="req-unmet">✓ 8+ characters</li>
+            <li id="reqUpper" class="req-unmet">✓ One uppercase letter</li>
+            <li id="reqNumber" class="req-unmet">✓ One number</li>
+            <li id="reqSpecial" class="req-unmet">✓ One special character</li>
+          </ul>
+
+          <button type="submit" id="signupSubmitBtn" class="btn-disabled mt-3" disabled>Create account</button>
         </form>
 
         <p class="footer-terms">By creating an account, you agree to the <a href="#">Terms of Service</a> and <a
@@ -275,6 +282,47 @@
             signupPasswordInput.type = 'text';
           } else {
             signupPasswordInput.type = 'password';
+          }
+        });
+      }
+
+      // Password Validation Logic
+      var reqLength = document.getElementById('reqLength');
+      var reqUpper = document.getElementById('reqUpper');
+      var reqNumber = document.getElementById('reqNumber');
+      var reqSpecial = document.getElementById('reqSpecial');
+      var signupSubmitBtn = document.getElementById('signupSubmitBtn');
+
+      if (signupPasswordInput) {
+        signupPasswordInput.addEventListener('input', function () {
+          var pwd = signupPasswordInput.value;
+
+          var hasLength = pwd.length >= 8;
+          var hasUpper = /[A-Z]/.test(pwd);
+          var hasNumber = /[0-9]/.test(pwd);
+          var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(pwd);
+
+          // Update Length
+          reqLength.className = hasLength ? 'req-met' : 'req-unmet';
+
+          // Update Upper
+          reqUpper.className = hasUpper ? 'req-met' : 'req-unmet';
+
+          // Update Number
+          reqNumber.className = hasNumber ? 'req-met' : 'req-unmet';
+
+          // Update Special
+          reqSpecial.className = hasSpecial ? 'req-met' : 'req-unmet';
+
+          // Enable/Disable Submit Button
+          if (hasLength && hasUpper && hasNumber && hasSpecial) {
+            signupSubmitBtn.disabled = false;
+            signupSubmitBtn.classList.remove('btn-disabled');
+            signupSubmitBtn.classList.add('btn-add');
+          } else {
+            signupSubmitBtn.disabled = true;
+            signupSubmitBtn.classList.add('btn-disabled');
+            signupSubmitBtn.classList.remove('btn-add');
           }
         });
       }

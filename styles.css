@@ -798,3 +798,23 @@ body {
   color: #1a0dab;
   text-decoration: underline;
 }
+
+.pwd-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.pwd-requirements li {
+  margin-bottom: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.req-unmet {
+  color: #999;
+}
+
+.req-met {
+  color: #22c55e;
+}
