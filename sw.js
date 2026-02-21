@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bubble-app-v14';
+const CACHE_NAME = 'bubble-app-v15';
 const ASSETS = ['/', '/index.html', '/styles.css', '/app.js', '/manifest.json'];
 
 self.addEventListener('install', (event) => {

@@ -103,12 +103,8 @@
             </div>
           </div>
 
-          <ul class="pwd-requirements">
-            <li id="reqLength" class="req-unmet">✓ 8+ characters</li>
-            <li id="reqUpper" class="req-unmet">✓ One uppercase letter</li>
-            <li id="reqNumber" class="req-unmet">✓ One number</li>
-            <li id="reqSpecial" class="req-unmet">✓ One special character</li>
-          </ul>
+          <p id="pwdReqError" class="error-msg hidden" style="margin-top: 0.5rem; font-size: 0.9rem; font-weight: 400;">
+            Password must contain at least 8 characters, a lowercase letter, and a number.</p>
 
           <button type="submit" id="signupSubmitBtn" class="btn-disabled mt-3" disabled>Create account</button>
         </form>
@@ -287,10 +283,7 @@
       }
 
       // Password Validation Logic
-      var reqLength = document.getElementById('reqLength');
-      var reqUpper = document.getElementById('reqUpper');
-      var reqNumber = document.getElementById('reqNumber');
-      var reqSpecial = document.getElementById('reqSpecial');
+      var pwdReqError = document.getElementById('pwdReqError');
       var signupSubmitBtn = document.getElementById('signupSubmitBtn');
 
       if (signupPasswordInput) {
@@ -298,24 +291,18 @@
           var pwd = signupPasswordInput.value;
 
           var hasLength = pwd.length >= 8;
-          var hasUpper = /[A-Z]/.test(pwd);
+          var hasLower = /[a-z]/.test(pwd);
           var hasNumber = /[0-9]/.test(pwd);
-          var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(pwd);
+          var isValid = hasLength && hasLower && hasNumber;
 
-          // Update Length
-          reqLength.className = hasLength ? 'req-met' : 'req-unmet';
-
-          // Update Upper
-          reqUpper.className = hasUpper ? 'req-met' : 'req-unmet';
-
-          // Update Number
-          reqNumber.className = hasNumber ? 'req-met' : 'req-unmet';
-
-          // Update Special
-          reqSpecial.className = hasSpecial ? 'req-met' : 'req-unmet';
+          if (pwd.length > 0 && !isValid) {
+            pwdReqError.classList.remove('hidden');
+          } else {
+            pwdReqError.classList.add('hidden');
+          }
 
           // Enable/Disable Submit Button
-          if (hasLength && hasUpper && hasNumber && hasSpecial) {
+          if (isValid) {
             signupSubmitBtn.disabled = false;
             signupSubmitBtn.classList.remove('btn-disabled');
             signupSubmitBtn.classList.add('btn-add');
