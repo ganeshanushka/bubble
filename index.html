@@ -27,14 +27,14 @@
 
   <div id="loginPopup" class="popup-overlay hidden">
     <div class="popup-box">
-      <h2>Welcome Back</h2>
-      <form class="login-form">
-        <input type="email" placeholder="University Email (.edu)" class="bubble-input" pattern=".+@.+\.(edu|EDU)"
-          title="Please enter a valid .edu email address" required>
-        <input type="password" placeholder="Password" class="bubble-input" required>
-        <button type="submit" class="btn-add">Log In</button>
+      <h2>Log in or create an account</h2>
+      <form id="emailForm" class="login-form" novalidate>
+        <div class="input-group">
+          <input type="email" id="emailInput" placeholder="University Email (.edu)" class="bubble-input" required>
+          <p id="emailError" class="error-msg hidden">Please enter a valid .edu email address.</p>
+        </div>
+        <button type="submit" class="btn-add">Continue</button>
       </form>
-      <p class="signup-link">Don't have an account? <a href="#">Sign Up</a></p>
     </div>
   </div>
 
@@ -109,6 +109,28 @@
           }, 400); // Wait for fade out
         }, 650); // Significant delay to clearly show it popped empty space
       });
+
+      // Handle form validation
+      var emailForm = document.getElementById('emailForm');
+      var emailInput = document.getElementById('emailInput');
+      var emailError = document.getElementById('emailError');
+
+      if (emailForm) {
+        emailForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = emailInput.value.trim().toLowerCase();
+          if (!email.endsWith('.edu')) {
+            emailError.classList.remove('hidden');
+            emailInput.classList.add('input-error');
+          } else {
+            emailError.classList.add('hidden');
+            emailInput.classList.remove('input-error');
+            // In a real app, you would proceed to the next step here
+            emailInput.value = '';
+            emailInput.placeholder = 'Success! Proceeding...';
+          }
+        });
+      }
 
     })();
   </script>
