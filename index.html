@@ -13,13 +13,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="float-bubbles" id="floatBubbles" aria-hidden="true"></div>
   <div class="hero">
-    <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span></h1>
+    <div class="bubble-wrap" id="bubbleWrap">
+      <h1 class="logo" aria-label="Bubble"><span id="logoText"></span><span class="logo-cursor" id="logoCursor"></span></h1>
+    </div>
   </div>
   <script>
     (function () {
       var logoEl = document.getElementById('logoText');
       var logoTitle = document.querySelector('.logo');
+      var bubbleWrap = document.getElementById('bubbleWrap');
+      var floatContainer = document.getElementById('floatBubbles');
       var word = 'Bubble';
       var i = 0;
       function type() {
@@ -29,6 +34,19 @@
           setTimeout(type, 320);
         } else if (logoTitle) {
           logoTitle.classList.add('logo-done');
+          if (bubbleWrap) bubbleWrap.classList.add('reveal');
+          document.body.classList.add('bubble-done');
+          if (floatContainer) {
+            for (var b = 0; b < 18; b++) {
+              var el = document.createElement('div');
+              el.className = 'float-bubble';
+              el.style.left = Math.random() * 100 + '%';
+              el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
+              el.style.animationDelay = (Math.random() * 5) + 's';
+              el.style.animationDuration = (6 + Math.random() * 4) + 's';
+              floatContainer.appendChild(el);
+            }
+          }
         }
       }
       setTimeout(type, 800);
