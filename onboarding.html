@@ -15,6 +15,77 @@
             border-radius: 2rem;
             padding: 3rem;
             max-width: 500px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-container {
+            display: none;
+            animation: slideUp 0.4s ease-out forwards;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.5);
+            color: #333;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.8);
+            color: #000;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #000;
+            line-height: 1.3;
+        }
+
+        .question-desc {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #7BAFD4;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
@@ -31,23 +102,39 @@
     <!-- Onboarding Popup -->
     <div class="popup-overlay fade-in">
         <div class="popup-box">
-            <div class="text-left">
-                <h2>Tell us about yourself</h2>
-                <p class="subtitle" style="margin-bottom: 1.5rem;">We'll use this to match you with connections.</p>
+            <div class="text-left" style="width: 100%;">
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
+                </div>
 
                 <form id="onboardingForm" class="login-form">
-                    <div class="input-group">
-                        <label class="font-bold">Full Name</label>
-                        <input type="text" id="nameInput" class="bubble-input" required>
+                    <!-- Step 1: Name -->
+                    <div class="step-container active" id="ob-step-1">
+                        <h2 class="question-title">What's your full name?</h2>
+                        <p class="question-desc">So your matches know who you are.</p>
+                        <input type="text" id="nameInput" class="bubble-input" placeholder="e.g. Jane Doe" required>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
                     </div>
 
-                    <div class="input-group mt-3">
-                        <label class="font-bold">Age</label>
-                        <input type="number" id="ageInput" class="bubble-input" min="16" max="150" required>
+                    <!-- Step 2: Age -->
+                    <div class="step-container" id="ob-step-2">
+                        <h2 class="question-title">How old are you?</h2>
+                        <p class="question-desc">You must be at least 18 to use Bubble.</p>
+                        <input type="number" id="ageInput" class="bubble-input" min="18" max="150" placeholder="e.g. 21"
+                            required>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
                     </div>
 
-                    <div class="input-group mt-3">
-                        <label class="font-bold">Gender</label>
+                    <!-- Step 3: Gender -->
+                    <div class="step-container" id="ob-step-3">
+                        <h2 class="question-title">How do you identify?</h2>
+                        <p class="question-desc">This helps us organize your discover feed.</p>
                         <select id="genderInput" class="bubble-input" required style="appearance: none;">
                             <option value="" disabled selected>Select gender</option>
                             <option value="Woman">Woman</option>
@@ -55,20 +142,36 @@
                             <option value="Non-binary">Non-binary</option>
                             <option value="Prefer not to say">Prefer not to say</option>
                         </select>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
                     </div>
 
-                    <div class="input-group mt-3">
-                        <label class="font-bold">Secondary Email</label>
-                        <input type="email" id="secondaryEmailInput" class="bubble-input" placeholder="Optional">
+                    <!-- Step 4: Secondary Email -->
+                    <div class="step-container" id="ob-step-4">
+                        <h2 class="question-title">Any secondary email?</h2>
+                        <p class="question-desc">Optional, used for account recovery.</p>
+                        <input type="email" id="secondaryEmailInput" class="bubble-input"
+                            placeholder="e.g. personal@gmail.com">
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
                     </div>
 
-                    <div class="input-group mt-3">
-                        <label class="font-bold">Phone Number</label>
-                        <input type="tel" id="phoneInput" class="bubble-input" required>
+                    <!-- Step 5: Phone Number -->
+                    <div class="step-container" id="ob-step-5">
+                        <h2 class="question-title">What's your phone number?</h2>
+                        <p class="question-desc">We use SMS to verify real students.</p>
+                        <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555" required>
+                        <div class="btn-group">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="submit" class="btn-add" style="flex: 1;">Complete Profile</button>
+                        </div>
                     </div>
-
-                    <button type="submit" class="btn-add mt-4" style="width: 100%;">Complete Profile</button>
                 </form>
+
             </div>
         </div>
     </div>
@@ -76,10 +179,74 @@
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Typeform logic
+        var currentStep = 1;
+        var totalSteps = 5;
+        var progressFill = document.getElementById('progressFill');
+
+        function showStep(step) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById('ob-step-' + step).classList.add('active');
+            progressFill.style.width = ((step / totalSteps) * 100) + '%';
+
+            // Focus first input
+            setTimeout(() => {
+                var input = document.getElementById('ob-step-' + step).querySelector('input, select');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        // Initial setup
+        showStep(currentStep);
+
+        document.querySelectorAll('.next-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                // Native HTML5 validation
+                var currentInput = document.getElementById('ob-step-' + currentStep).querySelector('input, select');
+                if (currentInput && !currentInput.reportValidity()) return;
+
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            });
+        });
+
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            });
+        });
+
+        // Handle enter key to go next
+        document.getElementById('onboardingForm').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                var currentInput = document.getElementById('ob-step-' + currentStep).querySelector('input, select');
+                if (currentInput && !currentInput.reportValidity()) return;
+
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                } else if (currentStep === totalSteps) {
+                    // Allow natural submit if valid
+                    if (currentInput.reportValidity()) {
+                        document.getElementById('onboardingForm').dispatchEvent(new Event('submit', { cancelable: true }));
+                    }
+                }
+            }
+        });
+
         document.getElementById('onboardingForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            // Redirect to profiles after onboarding completion
-            window.location.href = 'profiles.html';
+            // Only proceed if native validation passes
+            if (this.checkValidity()) {
+                window.location.href = 'profiles.html';
+            }
         });
     </script>
 </body>
