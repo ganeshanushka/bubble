@@ -662,8 +662,8 @@ body {
 /* --- Step 2 Login Popup Styles --- */
 .close-btn {
   position: absolute;
-  top: 14%;
-  right: 14%;
+  top: 18%;
+  right: 18%;
   font-family: var(--font);
   font-size: 1.5rem;
   font-weight: 800;
