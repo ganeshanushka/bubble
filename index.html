@@ -29,7 +29,8 @@
     <div class="popup-box">
       <h2>Welcome Back</h2>
       <form class="login-form">
-        <input type="email" placeholder="Email" class="bubble-input" required>
+        <input type="email" placeholder="University Email (.edu)" class="bubble-input" pattern=".+@.+\.(edu|EDU)"
+          title="Please enter a valid .edu email address" required>
         <input type="password" placeholder="Password" class="bubble-input" required>
         <button type="submit" class="btn-add">Log In</button>
       </form>
