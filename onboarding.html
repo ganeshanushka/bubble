@@ -194,6 +194,19 @@
                             required>
                         <div class="btn-group">
                             <button type="button" class="btn-add btn-secondary back-btn">Back</button>
+                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 8: Bio -->
+                    <div class="step-container" id="ob-step-8">
+                        <h2 class="question-title">Tell us about yourself</h2>
+                        <p class="question-desc">Write a short bio for your profile card.</p>
+                        <textarea id="bioInput" class="bubble-input"
+                            style="height: 100px; resize: none; width: 100%; border-radius: 1rem; padding: 1rem;"
+                            placeholder="Coffee addict, hackathon lover..." required></textarea>
+                        <div class="btn-group" style="margin-top: 1rem;">
+                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
                             <button type="submit" class="btn-add" style="flex: 1;">Complete Profile</button>
                         </div>
                     </div>
@@ -209,7 +222,7 @@
 
         // Typeform logic
         var currentStep = 1;
-        var totalSteps = 7;
+        var totalSteps = 8;
         var progressFill = document.getElementById('progressFill');
 
         function showStep(step) {
@@ -303,7 +316,8 @@
                     secondaryEmail: document.getElementById('secondaryEmailInput').value,
                     phone: document.getElementById('phoneInput').value,
                     school: document.getElementById('schoolInput').value,
-                    major: document.getElementById('majorInput').value
+                    major: document.getElementById('majorInput').value,
+                    bio: document.getElementById('bioInput').value
                 };
                 localStorage.setItem('bubble_user_profile', JSON.stringify(profileData));
 

@@ -79,6 +79,49 @@
         <p class="footer-terms">By continuing, you agree to the updated <a href="#">Terms of Service</a>, and <a
             href="#">Privacy Policy</a>.</p>
       </div>
+
+      <!-- Step 3: Create Account -->
+      <div id="step-3" class="hidden text-left">
+        <button type="button" class="close-btn" id="backToLoginBtnSignup"
+          aria-label="Back to log in or create account">X</button>
+        <h2>Create account</h2>
+        <p class="subtitle">Set a password to get started.</p>
+
+        <form id="signupForm" class="login-form">
+          <div class="input-group">
+            <label class="font-bold">Email Address</label>
+            <div class="email-edit-group">
+              <input type="email" id="signupEmail" class="bubble-input disabled-input" readonly>
+              <button type="button" id="editBtnSignup" class="edit-btn">Edit</button>
+            </div>
+          </div>
+
+          <div class="input-group mt-3">
+            <label class="font-bold">Password</label>
+            <div class="password-group">
+              <input type="password" id="signupPasswordInput" class="bubble-input" required>
+              <button type="button" class="toggle-password" id="togglePasswordBtnSignup">
+                <svg viewBox="0 0 24 24" fill="none" class="eye-icon">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <p id="signupError" class="error-msg hidden"
+            style="margin-top: 0.5rem; font-size: 0.8rem; font-weight: 400; text-align: left; color: #ff4d4d;">
+            Password must contain at least 8 characters, a lowercase letter, and a number.
+          </p>
+
+          <button type="submit" class="btn-add">Create account</button>
+        </form>
+
+        <p class="footer-terms">By continuing, you agree to the updated <a href="#">Terms of Service</a>, and <a
+            href="#">Privacy Policy</a>.</p>
+      </div>
     </div>
   </div>
 
@@ -182,9 +225,17 @@
               step1.classList.add('hidden');
               step2.classList.remove('hidden');
               disabledEmail.value = email;
+              localStorage.setItem('bubble_login_email', email);
             } else {
-              // New user, go to onboarding directly
-              window.location.href = 'onboarding.html';
+              // New user, go to create account step
+              var popupBox = document.querySelector('.popup-box');
+              if (popupBox) popupBox.classList.add('popup-step-2'); // Reuse same sizing
+              step1.classList.add('hidden');
+              var step3 = document.getElementById('step-3');
+              if (step3) step3.classList.remove('hidden');
+              var signupEmail = document.getElementById('signupEmail');
+              if (signupEmail) signupEmail.value = email;
+              localStorage.setItem('bubble_login_email', email);
             }
           }
         });
@@ -249,6 +300,74 @@
         passwordInput.addEventListener('input', function () {
           loginError.classList.add('hidden');
           passwordInput.classList.remove('input-error');
+        });
+      }
+
+      // signup logic
+      var signupForm = document.getElementById('signupForm');
+      var signupPasswordInput = document.getElementById('signupPasswordInput');
+      var signupError = document.getElementById('signupError');
+
+      if (signupForm) {
+        signupForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var pwd = signupPasswordInput.value;
+
+          // Validation: 8 chars, lowercase, number
+          var hasLower = /[a-z]/.test(pwd);
+          var hasNum = /[0-9]/.test(pwd);
+          var hasLength = pwd.length >= 8;
+
+          if (hasLower && hasNum && hasLength) {
+            window.location.href = 'onboarding.html';
+          } else {
+            signupError.classList.remove('hidden');
+            signupPasswordInput.classList.add('input-error');
+          }
+        });
+
+        if (signupPasswordInput) {
+          signupPasswordInput.addEventListener('input', function () {
+            signupError.classList.add('hidden');
+            signupPasswordInput.classList.remove('input-error');
+          });
+        }
+      }
+
+      // Back buttons for signup
+      var backToLoginBtnSignup = document.getElementById('backToLoginBtnSignup');
+      var editBtnSignup = document.getElementById('editBtnSignup');
+      var step3 = document.getElementById('step-3');
+
+      if (backToLoginBtnSignup) {
+        backToLoginBtnSignup.addEventListener('click', function (e) {
+          e.preventDefault();
+          var popupBox = document.querySelector('.popup-box');
+          if (popupBox) popupBox.classList.remove('popup-step-2');
+          step3.classList.add('hidden');
+          step1.classList.remove('hidden');
+        });
+      }
+
+      if (editBtnSignup) {
+        editBtnSignup.addEventListener('click', function (e) {
+          e.preventDefault();
+          var popupBox = document.querySelector('.popup-box');
+          if (popupBox) popupBox.classList.remove('popup-step-2');
+          step3.classList.add('hidden');
+          step1.classList.remove('hidden');
+        });
+      }
+
+      var togglePasswordBtnSignup = document.getElementById('togglePasswordBtnSignup');
+      if (togglePasswordBtnSignup && signupPasswordInput) {
+        togglePasswordBtnSignup.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (signupPasswordInput.type === 'password') {
+            signupPasswordInput.type = 'text';
+          } else {
+            signupPasswordInput.type = 'password';
+          }
         });
       }
 

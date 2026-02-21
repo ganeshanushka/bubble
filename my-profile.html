@@ -123,13 +123,17 @@
                             Chapel Hill</span></p>
                     <p class="my-profile-detail"><span class="detail-label">Major:</span> <span id="myMajor">Computer
                             Science</span></p>
-                    <p class="my-profile-detail"><span class="detail-label">University Email:</span> anushkag@unc.edu
+                    <p class="my-profile-detail"><span class="detail-label">University Email:</span> <span
+                            id="myUniEmail">anushkag@unc.edu</span>
                     </p>
                     <p class="my-profile-detail"><span class="detail-label">Secondary Email:</span> <span
                             id="mySecondaryEmail">aganesh@gmail.com</span>
                     </p>
                     <p class="my-profile-detail"><span class="detail-label">Phone:</span> <span id="myPhone">(555)
                             123-4567</span></p>
+                    <p class="my-profile-detail" style="margin-top: 1rem;"><span class="detail-label">Bio:</span><br>
+                        <span id="myBio" style="font-weight: 400; font-style: italic;">No bio added yet.</span>
+                    </p>
                 </div>
 
                 <button class="btn-add btn-connect">Edit Profile</button>
@@ -155,6 +159,13 @@
             if (profile.major) document.getElementById('myMajor').textContent = profile.major;
             if (profile.secondaryEmail) document.getElementById('mySecondaryEmail').textContent = profile.secondaryEmail;
             if (profile.phone) document.getElementById('myPhone').textContent = profile.phone;
+            if (profile.bio) document.getElementById('myBio').textContent = profile.bio;
+        }
+
+        // Load university email from login session
+        const loginEmail = localStorage.getItem('bubble_login_email');
+        if (loginEmail) {
+            document.getElementById('myUniEmail').textContent = loginEmail;
         }
 
         function handleLogout() {
