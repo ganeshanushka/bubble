@@ -246,8 +246,8 @@
           if (passwordInput.value === 'Nothing23') {
             loginError.classList.add('hidden');
             passwordInput.classList.remove('input-error');
-            alert("Success! You are now logged in.");
-            window.location.reload();
+            // Transition directly to the profiles page
+            window.location.href = 'profiles.html';
           } else {
             loginError.classList.remove('hidden');
             passwordInput.classList.add('input-error');

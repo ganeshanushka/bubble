@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble - Profiles</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-wrap">
+        <div class="hero">
+            <h1 class="logo fade-in">Profiles</h1>
+            <p class="tagline fade-in">Find your perfect connection</p>
+        </div>
+
+        <div class="profiles-container fade-in" style="animation-delay: 0.3s;">
+
+            <!-- Profile 1 -->
+            <div class="profile-card">
+                <div class="profile-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
+                        alt="Isabella">
+                </div>
+                <h2 class="profile-name">Isabella, 21</h2>
+                <p class="profile-major">Psychology</p>
+                <p class="profile-bio">Coffee addict, reading in the quad, always exploring vintage shops.</p>
+                <button class="btn-add btn-connect">Connect</button>
+            </div>
+
+            <!-- Profile 2 -->
+            <div class="profile-card">
+                <div class="profile-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
+                        alt="Liam">
+                </div>
+                <h2 class="profile-name">Liam, 22</h2>
+                <p class="profile-major">Computer Science</p>
+                <p class="profile-bio">Hackathons, climbing gym, and building pointless apps. Let's code.</p>
+                <button class="btn-add btn-connect">Connect</button>
+            </div>
+
+            <!-- Profile 3 -->
+            <div class="profile-card">
+                <div class="profile-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
+                        alt="Sophia">
+                </div>
+                <h2 class="profile-name">Sophia, 20</h2>
+                <p class="profile-major">Architecture</p>
+                <p class="profile-bio">Model building at 3 AM. Looking for study buddies who bring snacks.</p>
+                <button class="btn-add btn-connect">Connect</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="floatBubbles" class="float-bubbles"></div>
+
+    <script src="app.js"></script>
+    <script>
+        document.body.classList.add('bubble-done');
+        var floatContainer = document.getElementById('floatBubbles');
+        if (floatContainer) {
+            for (var b = 0; b < 18; b++) {
+                var el = document.createElement('div');
+                el.className = 'float-bubble';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                el.style.animationDuration = (6 + Math.random() * 4) + 's';
+                floatContainer.appendChild(el);
+            }
+        }
+    </script>
+</body>
+
+</html>
