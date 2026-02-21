@@ -175,12 +175,17 @@
           } else {
             emailError.classList.add('hidden');
             emailInput.classList.remove('input-error');
-            // Transition to step 2 – use bigger circle so all content fits
-            var popupBox = document.querySelector('.popup-box');
-            if (popupBox) popupBox.classList.add('popup-step-2');
-            step1.classList.add('hidden');
-            step2.classList.remove('hidden');
-            disabledEmail.value = email;
+            if (email === "anushkag@unc.edu") {
+              // Known user, show password step
+              var popupBox = document.querySelector('.popup-box');
+              if (popupBox) popupBox.classList.add('popup-step-2');
+              step1.classList.add('hidden');
+              step2.classList.remove('hidden');
+              disabledEmail.value = email;
+            } else {
+              // New user, go to onboarding directly
+              window.location.href = 'onboarding.html';
+            }
           }
         });
       }
