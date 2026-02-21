@@ -27,10 +27,8 @@
 
   <div id="loginPopup" class="popup-overlay hidden">
     <div class="popup-box">
-      <a href="#" class="close-btn" id="closeBtn">X</a>
-
       <div id="step-1">
-        <h2>Log in or create an account</h2>
+        <h2>Log in or<br>create an account</h2>
         <form id="emailForm" class="login-form mt-3" novalidate>
           <div class="input-group">
             <input type="email" id="emailInput" placeholder="University Email (.edu)" class="bubble-input" required>
@@ -41,6 +39,7 @@
       </div>
 
       <div id="step-2" class="hidden text-left">
+        <button type="button" class="close-btn" id="backToLoginBtn" aria-label="Back to log in or create account">X</button>
         <h2>Welcome back!</h2>
         <p class="subtitle">Enter your password to log in.</p>
 
@@ -159,7 +158,7 @@
       var step2 = document.getElementById('step-2');
       var disabledEmail = document.getElementById('disabledEmail');
       var editBtn = document.getElementById('editBtn');
-      var closeBtn = document.getElementById('closeBtn');
+      var backToLoginBtn = document.getElementById('backToLoginBtn');
 
       if (emailForm) {
         emailForm.addEventListener('submit', function (e) {
@@ -191,10 +190,13 @@
         });
       }
 
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function (e) {
+      if (backToLoginBtn) {
+        backToLoginBtn.addEventListener('click', function (e) {
           e.preventDefault();
-          window.location.reload(); // Reset state and go back to hero
+          var popupBox = document.querySelector('.popup-box');
+          if (popupBox) popupBox.classList.remove('popup-step-2');
+          step2.classList.add('hidden');
+          step1.classList.remove('hidden');
         });
       }
 
