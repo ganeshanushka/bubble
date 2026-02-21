@@ -75,7 +75,7 @@ body {
 }
 
 .logo {
-  font-family: 'Dancing Script', cursive;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   font-size: 3.5rem;
   font-weight: 400;
   margin: 0;
