@@ -490,9 +490,10 @@ body {
 }
 
 .popup-box {
+  position: relative;
   width: 90%;
-  max-width: 400px;
-  padding: 2.5rem;
+  max-width: 440px;
+  padding: 3rem 2.5rem 2.5rem;
   text-align: center;
   box-sizing: border-box;
   animation: popBox 0.5s ease-out forwards;
@@ -509,11 +510,13 @@ body {
 }
 
 .popup-box h2 {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.8rem;
-  color: #13294B;
+  font-family: var(--font);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #000;
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
 }
 
 .login-form {
@@ -650,4 +653,132 @@ body {
     opacity: 0;
     visibility: hidden;
   }
+}
+
+/* --- Step 2 Login Popup Styles --- */
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #7BAFD4;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #4B9CD3;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.subtitle {
+  color: #000;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  margin-top: 0;
+  text-align: left;
+}
+
+.font-bold {
+  font-weight: 800;
+  color: #000;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.email-edit-group {
+  display: flex;
+}
+
+.email-edit-group .bubble-input {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  color: #666;
+}
+
+.disabled-input {
+  background: rgba(255, 255, 255, 0.4) !important;
+  cursor: not-allowed;
+}
+
+.edit-btn {
+  background: #7BAFD4;
+  color: white;
+  border: 1px solid rgba(75, 156, 211, 0.4);
+  border-left: none;
+  padding: 0 1.25rem;
+  font-family: var(--font);
+  font-size: 1rem;
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover {
+  background: #4B9CD3;
+}
+
+.password-group {
+  position: relative;
+}
+
+.password-group .bubble-input {
+  width: 100%;
+  padding-right: 2.5rem;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  display: flex;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.forgot-pwd {
+  color: #000;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-pwd:hover {
+  color: #4B9CD3;
+}
+
+.footer-terms {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+.footer-terms a {
+  color: #1a0dab;
+  text-decoration: underline;
 }
