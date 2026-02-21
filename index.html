@@ -79,19 +79,20 @@
         // Add popping animation to main bubble
         bubbleWrap.classList.add('popping-main');
 
-        // Wait for bubble to completely pop (pop animation is 450ms), then clear screen and show popup
+        // Wait for bubble to completely pop (pop animation is 450ms)
         setTimeout(function () {
           var hero = document.querySelector('.hero');
-          if (hero) hero.classList.add('fade-out');
+          if (hero) hero.style.display = 'none'; // Hide the popped bubble completely 
+
           if (floatContainer) floatContainer.classList.add('fade-out');
 
+          // Only after the bubble is gone and background is fading do we show the popup
           setTimeout(function () {
-            if (hero) hero.style.display = 'none';
             if (floatContainer) floatContainer.style.display = 'none';
             var loginPopup = document.getElementById('loginPopup');
             if (loginPopup) loginPopup.classList.remove('hidden');
           }, 400); // Wait for fade out
-        }, 550); // Give the pop animation more than enough time to finish before fading container
+        }, 650); // Significant delay to clearly show it popped empty space
       });
 
     })();
