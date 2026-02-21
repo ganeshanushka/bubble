@@ -68,6 +68,10 @@
             </div>
           </div>
 
+          <p id="loginError" class="error-msg hidden"
+            style="margin-top: 0.5rem; font-size: 0.9rem; font-weight: 400; text-align: left;">Incorrect password.
+            Please try again.</p>
+
           <a href="#" class="forgot-pwd">Forgot your password?</a>
           <button type="submit" class="btn-add">Log in</button>
         </form>
@@ -229,6 +233,24 @@
             emailError.textContent = "Email not recognized. Please use anushkag@unc.edu or emisang@unc.edu for this demo.";
             emailError.classList.remove('hidden');
             emailInput.classList.add('input-error');
+          }
+        });
+      }
+
+      var passwordForm = document.getElementById('passwordForm');
+      var loginError = document.getElementById('loginError');
+
+      if (passwordForm && passwordInput) {
+        passwordForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (passwordInput.value === 'Nothing23') {
+            loginError.classList.add('hidden');
+            passwordInput.classList.remove('input-error');
+            alert("Success! You are now logged in.");
+            window.location.reload();
+          } else {
+            loginError.classList.remove('hidden');
+            passwordInput.classList.add('input-error');
           }
         });
       }
