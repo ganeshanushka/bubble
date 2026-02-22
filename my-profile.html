@@ -11,7 +11,7 @@
     <style>
         .my-profile-container {
             max-width: 600px;
-            margin: 2rem auto;
+            margin: 3.5rem auto 2rem;
             padding: 0 2rem;
         }
 
@@ -53,19 +53,70 @@
         .my-profile-name {
             font-size: 2rem;
             font-weight: 800;
-            color: #333;
-            margin: 0 0 0.5rem 0;
+            color: #13294B;
+            margin: 0 0 1.5rem 0;
+            letter-spacing: -0.02em;
         }
 
-        .my-profile-detail {
-            font-size: 1.1rem;
-            color: #666;
-            margin: 0.25rem 0;
+        .profile-info-grid {
+            display: grid;
+            gap: 0;
+            margin: 0 0 2rem 0;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            border: 1px solid rgba(75, 156, 211, 0.15);
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        .detail-label {
+        .profile-info-row {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            min-height: 3rem;
+            border-bottom: 1px solid rgba(75, 156, 211, 0.08);
+        }
+
+        .profile-info-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .profile-info-label {
+            font-size: 0.8rem;
             font-weight: 600;
+            color: #6b8dae;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .profile-info-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #13294B;
+            text-align: right;
+        }
+
+        .profile-bio-section {
+            margin-bottom: 2rem;
+            padding: 1.25rem 1.5rem;
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(75, 156, 211, 0.15);
+        }
+
+        .profile-bio-section .profile-info-label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-bio-section .profile-info-value {
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
             color: #444;
+            font-style: italic;
         }
 
         .back-link {
@@ -100,7 +151,7 @@
 <body>
     <div class="app-wrap">
         <nav class="top-nav fade-in">
-            <a href="profiles.html" class="back-link">
+            <a href="profiles.html" class="back-link" id="backToFeedLink">
                 ← Back to Feed
             </a>
             <div style="flex-grow: 1;"></div>
@@ -114,39 +165,52 @@
                 </div>
                 <h1 class="my-profile-name" id="myProfileName">Anushka Ganesh</h1>
 
-                <div
-                    style="margin: 2rem 0; text-align: left; background: rgba(255,255,255,0.5); padding: 1.5rem; border-radius: 1rem;">
-                    <p class="my-profile-detail"><span class="detail-label">Age:</span> <span id="myAge">20</span></p>
-                    <p class="my-profile-detail"><span class="detail-label">Gender:</span> <span
-                            id="myGender">Woman</span></p>
-                    <p class="my-profile-detail"><span class="detail-label">School:</span> <span id="mySchool">UNC
-                            Chapel Hill</span></p>
-                    <p class="my-profile-detail"><span class="detail-label">Major:</span> <span id="myMajor">Computer
-                            Science</span></p>
-                    <p class="my-profile-detail"><span class="detail-label">University Email:</span> <span
-                            id="myUniEmail">anushkag@unc.edu</span>
-                    </p>
-                    <p class="my-profile-detail"><span class="detail-label">Secondary Email:</span> <span
-                            id="mySecondaryEmail">aganesh@gmail.com</span>
-                    </p>
-                    <p class="my-profile-detail"><span class="detail-label">Phone:</span> <span id="myPhone">(555)
-                            123-4567</span></p>
-                    <p class="my-profile-detail" style="margin-top: 1rem;"><span class="detail-label">Bio:</span><br>
-                        <span id="myBio" style="font-weight: 400; font-style: italic;">No bio added yet.</span>
-                    </p>
+                <div class="profile-info-grid">
+                    <div class="profile-info-row">
+                        <span class="profile-info-label">Age</span>
+                        <span class="profile-info-value" id="myAge">20</span>
+                    </div>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label">Gender</span>
+                        <span class="profile-info-value" id="myGender">Woman</span>
+                    </div>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label">School</span>
+                        <span class="profile-info-value" id="mySchool">UNC Chapel Hill</span>
+                    </div>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label">University email</span>
+                        <span class="profile-info-value" id="myUniEmail">anushkag@unc.edu</span>
+                    </div>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label">Secondary email</span>
+                        <span class="profile-info-value" id="mySecondaryEmail">aganesh@gmail.com</span>
+                    </div>
                 </div>
 
-                <button class="btn-add btn-connect">Edit Profile</button>
+                <div class="profile-bio-section">
+                    <span class="profile-info-label">Bio</span>
+                    <p class="profile-info-value" id="myBio">No bio added yet.</p>
+                </div>
+
+                <a href="edit-profile.html" class="btn-add btn-connect" style="text-decoration: none; color: inherit; display: inline-block; text-align: center;">Edit Profile</a>
                 <button class="btn-add logout-btn" onclick="handleLogout()">Log out</button>
             </div>
         </div>
     </div>
 
-    <div id="floatBubbles" class="float-bubbles"></div>
-
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Back to Feed: always go to the friend circle (profiles page)
+        var backToFeedLink = document.getElementById('backToFeedLink');
+        if (backToFeedLink) {
+            backToFeedLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.location.href = 'profiles.html';
+            });
+        }
 
         // Load data from localStorage
         const storedProfile = localStorage.getItem('bubble_user_profile');
@@ -156,9 +220,7 @@
             if (profile.age) document.getElementById('myAge').textContent = profile.age;
             if (profile.gender) document.getElementById('myGender').textContent = profile.gender;
             if (profile.school) document.getElementById('mySchool').textContent = profile.school;
-            if (profile.major) document.getElementById('myMajor').textContent = profile.major;
             if (profile.secondaryEmail) document.getElementById('mySecondaryEmail').textContent = profile.secondaryEmail;
-            if (profile.phone) document.getElementById('myPhone').textContent = profile.phone;
             if (profile.bio) document.getElementById('myBio').textContent = profile.bio;
         }
 
@@ -171,19 +233,6 @@
         function handleLogout() {
             localStorage.removeItem('bubble_user_profile');
             window.location.href = 'index.html';
-        }
-
-        var floatContainer = document.getElementById('floatBubbles');
-        if (floatContainer) {
-            for (var b = 0; b < 18; b++) {
-                var el = document.createElement('div');
-                el.className = 'float-bubble';
-                el.style.left = Math.random() * 100 + '%';
-                el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
-                el.style.animationDelay = (Math.random() * 5) + 's';
-                el.style.animationDuration = (2 + Math.random() * 2) + 's';
-                floatContainer.appendChild(el);
-            }
         }
     </script>
 </body>

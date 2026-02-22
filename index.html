@@ -212,18 +212,23 @@
       var editBtn = document.getElementById('editBtn');
       var backToLoginBtn = document.getElementById('backToLoginBtn');
 
+      function isAnushkaEmail(email) {
+        return email === 'anushkag@unc.edu' || email === 'anushkag@gmail.com' || email.indexOf('anushkag@gmail') === 0;
+      }
+
       if (emailForm) {
         emailForm.addEventListener('submit', function (e) {
           e.preventDefault();
           var email = emailInput.value.trim().toLowerCase();
-          if (!email.endsWith('.edu')) {
+          var allowed = email.endsWith('.edu') || isAnushkaEmail(email);
+          if (!allowed) {
             emailError.classList.remove('hidden');
             emailInput.classList.add('input-error');
           } else {
             emailError.classList.add('hidden');
             emailInput.classList.remove('input-error');
-            if (email === "anushkag@unc.edu") {
-              // Known user, show password step
+            if (isAnushkaEmail(email)) {
+              // Known user (Anushka), show password step
               var popupBox = document.querySelector('.popup-box');
               if (popupBox) popupBox.classList.add('popup-step-2');
               step1.classList.add('hidden');
@@ -231,9 +236,9 @@
               disabledEmail.value = email;
               localStorage.setItem('bubble_login_email', email);
             } else {
-              // New user, go to create account step
+              // New user, go to create account step — profile will use their onboarding input later
               var popupBox = document.querySelector('.popup-box');
-              if (popupBox) popupBox.classList.add('popup-step-2'); // Reuse same sizing
+              if (popupBox) popupBox.classList.add('popup-step-2');
               step1.classList.add('hidden');
               var step3 = document.getElementById('step-3');
               if (step3) step3.classList.remove('hidden');
@@ -287,8 +292,18 @@
           var email = disabledEmail.value.toLowerCase();
           var pwd = passwordInput.value;
 
-          if (email === "anushkag@unc.edu") {
+          if (isAnushkaEmail(email)) {
             if (pwd === "Nothing23") {
+              // Set Anushka's predefined profile so My Profile shows her info
+              var anushkaProfile = {
+                name: 'Anushka Ganesh',
+                age: 21,
+                gender: 'Woman',
+                secondaryEmail: 'anu@gmail.com',
+                school: 'Chapel Hill',
+                bio: 'coffee'
+              };
+              localStorage.setItem('bubble_user_profile', JSON.stringify(anushkaProfile));
               window.location.href = 'profiles.html';
             } else {
               loginError.classList.remove('hidden');

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble - Edit Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .edit-profile-container {
+            max-width: 560px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .edit-profile-card {
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            border-radius: 2rem;
+            padding: 2rem 2.5rem;
+            box-shadow:
+                inset 0 0 15px rgba(255, 255, 255, 0.6),
+                inset 4px 0 20px rgba(75, 156, 211, 0.25),
+                inset -4px 0 20px rgba(123, 175, 212, 0.2),
+                0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .edit-profile-card h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #13294B;
+            margin: 0 0 1.5rem 0;
+            text-align: center;
+        }
+
+        .edit-field {
+            margin-bottom: 1.25rem;
+        }
+
+        .edit-field label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.4rem;
+        }
+
+        .edit-field .bubble-input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .edit-field .bubble-input[readonly] {
+            background: rgba(255, 255, 255, 0.5);
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .edit-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            padding: 0.875rem 2rem;
+            font-family: var(--font);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent), #7BAFD4);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(75, 156, 211, 0.35);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #7BAFD4;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #4B9CD3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrap">
+        <nav class="top-nav fade-in">
+            <a href="my-profile.html" class="back-link" id="backLink">← Back to Profile</a>
+            <div style="flex-grow: 1;"></div>
+        </nav>
+
+        <div class="edit-profile-container fade-in" style="animation-delay: 0.1s;">
+            <div class="edit-profile-card">
+                <h1>Edit Profile</h1>
+
+                <form id="editProfileForm">
+                    <div class="edit-field">
+                        <label for="editName">Full name</label>
+                        <input type="text" id="editName" class="bubble-input" placeholder="e.g. Jane Doe" required>
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editAge">Age</label>
+                        <input type="number" id="editAge" class="bubble-input" min="18" max="99" placeholder="e.g. 21"
+                            required>
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editGender">Gender</label>
+                        <select id="editGender" class="bubble-input" style="appearance: none; cursor: pointer;">
+                            <option value="">Select gender</option>
+                            <option value="Woman">Woman</option>
+                            <option value="Man">Man</option>
+                            <option value="Non-binary">Non-binary</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editUniEmail">University email</label>
+                        <input type="email" id="editUniEmail" class="bubble-input" readonly>
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editSecondaryEmail">Secondary email</label>
+                        <input type="email" id="editSecondaryEmail" class="bubble-input"
+                            placeholder="e.g. personal@gmail.com">
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editSchool">School</label>
+                        <input type="text" id="editSchool" class="bubble-input" placeholder="e.g. UNC Chapel Hill">
+                    </div>
+
+                    <div class="edit-field">
+                        <label for="editBio">Bio</label>
+                        <textarea id="editBio" class="bubble-input" rows="4"
+                            placeholder="Tell people a bit about yourself..."></textarea>
+                    </div>
+
+                    <div class="edit-actions">
+                        <button type="submit" class="btn-save">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.body.classList.add('bubble-done');
+
+        // Load current profile and login email into form
+        var stored = localStorage.getItem('bubble_user_profile');
+        var profile = stored ? JSON.parse(stored) : {};
+        var loginEmail = localStorage.getItem('bubble_login_email') || '';
+
+        document.getElementById('editName').value = profile.name || '';
+        document.getElementById('editAge').value = profile.age || '';
+        document.getElementById('editGender').value = profile.gender || '';
+        document.getElementById('editUniEmail').value = loginEmail;
+        document.getElementById('editSecondaryEmail').value = profile.secondaryEmail || '';
+        document.getElementById('editSchool').value = profile.school || '';
+        document.getElementById('editBio').value = profile.bio || '';
+
+        document.getElementById('editProfileForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var updated = {
+                name: document.getElementById('editName').value.trim(),
+                age: document.getElementById('editAge').value,
+                gender: document.getElementById('editGender').value,
+                secondaryEmail: document.getElementById('editSecondaryEmail').value.trim(),
+                school: document.getElementById('editSchool').value.trim(),
+                bio: document.getElementById('editBio').value.trim()
+            };
+            if (!updated.name) {
+                document.getElementById('editName').focus();
+                return;
+            }
+            localStorage.setItem('bubble_user_profile', JSON.stringify(updated));
+            window.location.href = 'my-profile.html';
+        });
+
+        // Back link: prefer history.back so they return to my-profile
+        var backLink = document.getElementById('backLink');
+        if (backLink) {
+            backLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'my-profile.html';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

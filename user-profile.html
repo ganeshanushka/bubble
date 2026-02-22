@@ -11,7 +11,7 @@
     <style>
         .user-profile-container {
             max-width: 900px;
-            margin: 2rem auto;
+            margin: 3.5rem auto 2rem;
             padding: 0 2rem;
         }
 
@@ -146,6 +146,16 @@
             box-shadow: 0 6px 20px rgba(123, 175, 212, 0.6);
         }
 
+        .btn-chat-link {
+            display: block;
+            margin-top: 1.5rem;
+            text-decoration: none;
+        }
+
+        .btn-chat-link .btn-chat {
+            display: block;
+        }
+
         .bottom-section {
             background: rgba(255, 255, 255, 0.6);
             border-radius: 2rem;
@@ -205,7 +215,7 @@
 <body>
     <div class="app-wrap">
         <nav class="top-nav fade-in">
-            <a href="profiles.html" class="back-link">
+            <a href="profiles.html" class="back-link" id="backToFeedLink">
                 ← Back to Feed
             </a>
             <div style="flex-grow: 1;"></div>
@@ -234,18 +244,9 @@
                 <!-- 1/3 Left Column -->
                 <div class="left-column">
                     <div class="info-box">
-                        <div class="info-label">Major</div>
-                        <div class="info-value" id="userMajor">Psychology</div>
-                    </div>
-
-                    <div class="info-box">
                         <div class="info-label">School</div>
                         <div class="info-value" id="userSchool">UNC Chapel Hill</div>
                     </div>
-
-                    <button class="btn-chat">
-                        💬 Start Chat
-                    </button>
                 </div>
 
                 <!-- 2/3 Right Column -->
@@ -293,30 +294,31 @@
                     </div>
                 </div>
 
-                <div class="bottom-item">
-                    <div class="bottom-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                            </path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="info-label" style="font-size: 0.8rem; margin-bottom: 0;">Phone</div>
-                        <div style="font-weight: 500;" id="userPhone">(555) 987-6543</div>
-                    </div>
-                </div>
             </div>
 
+            <!-- Start Chat (below bio, proximity, email) -->
+            <a href="#" id="startChatLink" class="btn-chat-link">
+                <span class="btn-chat">💬 Start Chat</span>
+            </a>
         </div>
     </div>
-
-    <div id="floatBubbles" class="float-bubbles"></div>
 
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
+
+        // Back to Feed: always handle in JS — go back to map/profiles when possible, else profiles.html
+        var backToFeedLink = document.getElementById('backToFeedLink');
+        if (backToFeedLink) {
+            backToFeedLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'profiles.html';
+                }
+            });
+        }
 
         // Update Nav from LocalStorage
         const storedProfile = localStorage.getItem('bubble_user_profile');
@@ -335,12 +337,10 @@
                 age: 21,
                 pronouns: 'She/Her',
                 gender: 'Woman',
-                major: 'Psychology',
                 school: 'UNC Chapel Hill',
                 bio: 'Coffee addict, reading in the quad, always exploring vintage shops down on Franklin street. I\'m typically easy-going and always looking for a new study buddy or someone to grab food with! Also an absolute fanatic for indie rock shows and late night ice cream runs. Come say hi!',
                 proximity: '0.8 miles away',
                 email: 'isabella@unc.edu',
-                phone: '(555) 987-6543',
                 img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200'
             },
             liam: {
@@ -348,12 +348,10 @@
                 age: 22,
                 pronouns: 'He/Him',
                 gender: 'Man',
-                major: 'Computer Science',
                 school: 'UNC Chapel Hill',
                 bio: 'Hackathons, climbing gym, and building pointless apps. Let\'s code. I spend most of my time in Sitterson Hall or looking for the best tacos in town. Always down for a quick hike or a deep dive into some obscure tech. Let\'s build something cool together.',
                 proximity: '1.2 miles away',
                 email: 'liam@unc.edu',
-                phone: '(555) 234-5678',
                 img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200'
             },
             sophia: {
@@ -361,13 +359,77 @@
                 age: 20,
                 pronouns: 'She/They',
                 gender: 'Woman',
-                major: 'Architecture',
                 school: 'UNC Chapel Hill',
                 bio: 'Model building at 3 AM. Looking for study buddies who bring snacks. Architecture is life, but I make time for photography and pottery. I love finding hidden architectural gems around campus and sketching in different libraries. If you have a good playlist, we\'ll get along just fine.',
                 proximity: '0.5 miles away',
                 email: 'sophia@unc.edu',
-                phone: '(555) 345-6789',
                 img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            marcus: {
+                name: 'Marcus',
+                age: 21,
+                pronouns: 'He/Him',
+                gender: 'Man',
+                school: 'UNC Chapel Hill',
+                bio: 'Pre-med, coffee runs at 2 AM. Love hiking and board game nights. Always looking for someone to study with at the library.',
+                proximity: '1.0 miles away',
+                email: 'marcus@unc.edu',
+                img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            zoe: {
+                name: 'Zoe',
+                age: 19,
+                pronouns: 'She/Her',
+                gender: 'Woman',
+                school: 'UNC Chapel Hill',
+                bio: 'Film and media studies. Into indie music and thrift shopping. Down for movie marathons and deep conversations.',
+                proximity: '0.6 miles away',
+                email: 'zoe@unc.edu',
+                img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            jake: {
+                name: 'Jake',
+                age: 23,
+                pronouns: 'He/Him',
+                gender: 'Man',
+                school: 'UNC Chapel Hill',
+                bio: 'Grad student in economics. Runner and trivia nerd. Looking for running buddies and people who like food trucks.',
+                proximity: '1.4 miles away',
+                email: 'jake@unc.edu',
+                img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            emma: {
+                name: 'Emma',
+                age: 20,
+                pronouns: 'She/Her',
+                gender: 'Woman',
+                school: 'UNC Chapel Hill',
+                bio: 'English major, book club regular. Love cozy cafes and weekend brunch. Always up for a new recommendation.',
+                proximity: '0.9 miles away',
+                email: 'emma@unc.edu',
+                img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            noah: {
+                name: 'Noah',
+                age: 22,
+                pronouns: 'He/Him',
+                gender: 'Man',
+                school: 'UNC Chapel Hill',
+                bio: 'CS and music. I play guitar and build side projects. Looking for jam buddies and hackathon teammates.',
+                proximity: '1.1 miles away',
+                email: 'noah@unc.edu',
+                img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200'
+            },
+            ava: {
+                name: 'Ava',
+                age: 21,
+                pronouns: 'She/Her',
+                gender: 'Woman',
+                school: 'UNC Chapel Hill',
+                bio: 'Psychology and art. Love painting and people-watching at the quad. Down for museum trips and late-night talks.',
+                proximity: '0.7 miles away',
+                email: 'ava@unc.edu',
+                img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200'
             }
         };
 
@@ -378,27 +440,13 @@
             const u = users[userKey];
             document.getElementById('userName').textContent = u.name;
             document.getElementById('userDemographics').textContent = `${u.age} • ${u.pronouns}, ${u.gender}`;
-            document.getElementById('userMajor').textContent = u.major;
             document.getElementById('userSchool').textContent = u.school;
             document.getElementById('userBio').textContent = u.bio;
             document.getElementById('userProximity').textContent = u.proximity;
             document.getElementById('userEmail').textContent = u.email;
-            document.getElementById('userPhone').textContent = u.phone;
             document.getElementById('profileImg').src = u.img;
             document.getElementById('profileImg').alt = u.name;
-        }
-
-        var floatContainer = document.getElementById('floatBubbles');
-        if (floatContainer) {
-            for (var b = 0; b < 18; b++) {
-                var el = document.createElement('div');
-                el.className = 'float-bubble';
-                el.style.left = Math.random() * 100 + '%';
-                el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
-                el.style.animationDelay = (Math.random() * 5) + 's';
-                el.style.animationDuration = (2 + Math.random() * 2) + 's';
-                floatContainer.appendChild(el);
-            }
+            document.getElementById('startChatLink').href = 'chat.html?user=' + userKey;
         }
     </script>
 </body>

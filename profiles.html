@@ -8,6 +8,35 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <style>
+        .hover-profile-panel {
+            max-width: 360px;
+            margin: 1.5rem auto 2rem;
+            padding: 1.5rem;
+            border-radius: 2rem;
+            background: radial-gradient(ellipse 90% 90% at 40% 25%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.85));
+            box-shadow: 0 12px 32px rgba(19, 41, 75, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+        .hover-profile-panel .hover-profile-img {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(75, 156, 211, 0.25);
+        }
+        .hover-profile-panel .hover-profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hover-profile-panel .hover-profile-name { font-size: 1.25rem; font-weight: 800; color: #13294B; margin: 0 0 0.25rem; }
+        .hover-profile-panel .hover-profile-meta { font-size: 0.9rem; color: #6b8dae; margin-bottom: 0.75rem; }
+        .hover-profile-panel .hover-profile-bio { font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 1rem; }
+        .hover-profile-panel .hover-profile-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .hover-profile-panel .hover-profile-actions a { text-decoration: none; }
+    </style>
 </head>
 
 <body>
@@ -21,70 +50,25 @@
 
         <!-- New Location Search Bar -->
         <div class="search-container fade-in" style="animation-delay: 0.1s;">
-            <div class="glass-search-box">
+            <div class="glass-search-box" id="locationSearchWrap">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="locationSearch" placeholder="Search for places (e.g. The Quad, Library...)">
+                <input type="text" id="locationSearch" placeholder="Search city or state (e.g. Chapel Hill, NC)" autocomplete="off">
                 <button id="searchBtn">Find Bubbles</button>
             </div>
+            <div id="locationDropdown" class="location-dropdown" style="display: none;"></div>
         </div>
 
-        <!-- Dynamic Place Bubble (Hidden until search) -->
-        <div id="placeBubbleContainer" class="place-bubble-container" style="display: none;">
-            <div class="massive-bubble">
-                <h2 id="placeBubbleTitle" class="place-title">The Quad</h2>
-                <!-- Pins will be injected here via JS -->
-                <div id="bubblePins" class="bubble-pins-wrapper"></div>
-            </div>
-        </div>
-
-        <!-- Friends Feed (Hidden until search) -->
-        <div id="friendsFeed" style="display: none;">
+        <!-- Friends in your bubble: title + bubble + hover profile (hidden until search) -->
+        <div id="friendsSection" style="display: none;">
             <h2 id="friendsTitle" class="feed-title fade-in">Friends in your bubble</h2>
-            <div class="profiles-container fade-in">
-
-                <!-- Profile 1 -->
-                <a href="user-profile.html?user=isabella" class="profile-bubble-link">
-                    <div class="profile-card">
-                        <div class="profile-img-wrap">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
-                                alt="Isabella">
-                        </div>
-                        <h2 class="profile-name">Isabella, 21</h2>
-                        <p class="profile-major">Psychology</p>
-                        <p class="profile-bio">Coffee addict, reading in the quad, always exploring vintage shops.</p>
-                        <button class="btn-add btn-connect">Connect</button>
-                    </div>
-                </a>
-
-                <!-- Profile 2 -->
-                <a href="user-profile.html?user=liam" class="profile-bubble-link">
-                    <div class="profile-card">
-                        <div class="profile-img-wrap">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
-                                alt="Liam">
-                        </div>
-                        <h2 class="profile-name">Liam, 22</h2>
-                        <p class="profile-major">Computer Science</p>
-                        <p class="profile-bio">Hackathons, climbing gym, and building pointless apps. Let's code.</p>
-                        <button class="btn-add btn-connect">Connect</button>
-                    </div>
-                </a>
-
-                <!-- Profile 3 -->
-                <a href="user-profile.html?user=sophia" class="profile-bubble-link">
-                    <div class="profile-card">
-                        <div class="profile-img-wrap">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
-                                alt="Sophia">
-                        </div>
-                        <h2 class="profile-name">Sophia, 20</h2>
-                        <p class="profile-major">Architecture</p>
-                        <p class="profile-bio">Model building at 3 AM. Looking for study buddies who bring snacks.</p>
-                        <button class="btn-add btn-connect">Connect</button>
-                    </div>
-                </a>
-
-            </div> <!-- End friendsFeed -->
+            <div id="placeBubbleContainer" class="place-bubble-container">
+                <div class="massive-bubble">
+                    <h2 id="placeBubbleTitle" class="place-title">The Quad</h2>
+                    <div id="bubblePins" class="bubble-pins-wrapper"></div>
+                </div>
+            </div>
+            <!-- Full profile shown under bubble on pin hover -->
+            <div id="hoverProfilePanel" class="hover-profile-panel" style="display: none;"></div>
         </div>
 
         <script src="app.js"></script>
@@ -98,74 +82,158 @@
                 if (profile.name) {
                     document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
                     document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
-
-                    // Add a card for the user in the feed
-                    const container = document.querySelector('.profiles-container');
-                    if (container) {
-                        const cardAnchor = document.createElement('a');
-                        cardAnchor.href = 'my-profile.html';
-                        cardAnchor.className = 'profile-bubble-link';
-
-                        cardAnchor.innerHTML = `
-                        <div class="profile-card you-card">
-                            <div class="profile-img-wrap" style="position: relative;">
-                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
-                                    alt="${profile.name}">
-                                <div class="you-badge">YOU</div>
-                            </div>
-                            <h2 class="profile-name">${profile.name}, ${profile.age}</h2>
-                            <p class="profile-major">${profile.major || ''}</p>
-                            <p class="profile-bio">${profile.bio || 'No bio yet.'}</p>
-                            <button class="btn-add btn-connect">My Profile</button>
-                        </div>
-                    `;
-                        container.prepend(cardAnchor);
-                    }
                 }
             }
 
-            // --- Location Search Logic ---
+            // People shown as pins in the bubble — scattered layout (keys match user-profile.html)
+            const BUBBLE_PEOPLE = [
+                { key: 'isabella', name: 'Isabella', age: 21, img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Coffee addict, reading in the quad, always exploring vintage shops. Easy-going, always looking for a study buddy or someone to grab food with!', top: '32%', left: '18%', large: false },
+                { key: 'liam', name: 'Liam', age: 22, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Hackathons, climbing gym, and building pointless apps. Let\'s code. Always down for a quick hike or a deep dive into some obscure tech.', top: '68%', left: '82%', large: false },
+                { key: 'sophia', name: 'Sophia', age: 20, img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Model building at 3 AM. Looking for study buddies who bring snacks. Architecture is life; I make time for photography and pottery.', top: '85%', left: '38%', large: false },
+                { key: 'marcus', name: 'Marcus', age: 21, img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Pre-med, coffee runs at 2 AM. Love hiking and board game nights. Always looking for someone to study with at the library.', top: '52%', left: '72%', large: false },
+                { key: 'zoe', name: 'Zoe', age: 19, img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Film and media studies. Into indie music and thrift shopping. Down for movie marathons and deep conversations.', top: '78%', left: '22%', large: false },
+                { key: 'jake', name: 'Jake', age: 23, img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Grad student in economics. Runner and trivia nerd. Looking for running buddies and people who like food trucks.', top: '42%', left: '48%', large: false },
+                { key: 'emma', name: 'Emma', age: 20, img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100&h=100', bio: 'English major, book club regular. Love cozy cafes and weekend brunch. Always up for a new recommendation.', top: '28%', left: '58%', large: false },
+                { key: 'noah', name: 'Noah', age: 22, img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100&h=100', bio: 'CS and music. I play guitar and build side projects. Looking for jam buddies and hackathon teammates.', top: '62%', left: '35%', large: false },
+                { key: 'ava', name: 'Ava', age: 21, img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100&h=100', bio: 'Psychology and art. Love painting and people-watching at the quad. Down for museum trips and late-night talks.', top: '38%', left: '85%', large: false }
+            ];
+
             const searchInput = document.getElementById('locationSearch');
             const searchBtn = document.getElementById('searchBtn');
-            const placeBubbleContainer = document.getElementById('placeBubbleContainer');
+            const friendsSection = document.getElementById('friendsSection');
             const placeBubbleTitle = document.getElementById('placeBubbleTitle');
             const bubblePins = document.getElementById('bubblePins');
-            const friendsFeed = document.getElementById('friendsFeed');
+            const hoverProfilePanel = document.getElementById('hoverProfilePanel');
+
+            function renderPins() {
+                var html = '';
+                BUBBLE_PEOPLE.forEach(function (p, i) {
+                    var cls = p.large ? 'profile-pin pin-large' : 'profile-pin';
+                    var delay = (i * 0.08 + 0.1).toFixed(2);
+                    html += '<div class="' + cls + ' bubble-pin" data-user-key="' + p.key + '" style="top:' + p.top + ';left:' + p.left + ';animation-delay:' + delay + 's"><img src="' + p.img + '" alt="' + p.name + '"></div>';
+                });
+                bubblePins.innerHTML = html;
+
+                var hidePanelTimer = null;
+                function scheduleHidePanel() {
+                    if (hidePanelTimer) clearTimeout(hidePanelTimer);
+                    hidePanelTimer = setTimeout(function () {
+                        hoverProfilePanel.style.display = 'none';
+                        hoverProfilePanel.innerHTML = '';
+                        hidePanelTimer = null;
+                    }, 200);
+                }
+                hoverProfilePanel.addEventListener('mouseenter', function () {
+                    if (hidePanelTimer) { clearTimeout(hidePanelTimer); hidePanelTimer = null; }
+                });
+                hoverProfilePanel.addEventListener('mouseleave', function () {
+                    scheduleHidePanel();
+                });
+
+                bubblePins.querySelectorAll('.bubble-pin').forEach(function (pin) {
+                    var key = pin.getAttribute('data-user-key');
+                    var person = BUBBLE_PEOPLE.find(function (p) { return p.key === key; });
+                    if (!person) return;
+
+                    pin.addEventListener('mouseenter', function () {
+                        if (hidePanelTimer) { clearTimeout(hidePanelTimer); hidePanelTimer = null; }
+                        hoverProfilePanel.style.display = 'block';
+                        hoverProfilePanel.innerHTML =
+                            '<div class="hover-profile-img"><img src="' + person.img.replace('w=100', 'w=200') + '" alt="' + person.name + '"></div>' +
+                            '<div class="hover-profile-name">' + person.name + ', ' + person.age + '</div>' +
+                            '<div class="hover-profile-meta">In your bubble</div>' +
+                            '<p class="hover-profile-bio">' + person.bio + '</p>' +
+                            '<div class="hover-profile-actions">' +
+                            '<a href="user-profile.html?user=' + person.key + '" class="btn-add btn-connect">View profile</a><a href="chat.html?user=' + person.key + '" class="btn-add btn-connect">Start chat</a>' +
+                            '</div>';
+                    });
+
+                    pin.addEventListener('mouseleave', function () {
+                        scheduleHidePanel();
+                    });
+                });
+            }
 
             function executeSearch() {
-                const query = searchInput.value.trim();
+                var query = searchInput.value.trim();
                 if (!query) return;
 
-                // 1. Update Place Bubble Title
                 placeBubbleTitle.textContent = query;
+                renderPins();
 
-                // 2. Generate random pins based on available standard profiles
-                bubblePins.innerHTML = `
-                <div class="profile-pin" style="top: 20%; left: 30%; animation-delay: 0.1s;">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100" alt="Isabella">
-                </div>
-                <div class="profile-pin pin-large" style="top: 50%; left: 60%; animation-delay: 0.3s;">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100" alt="Liam">
-                </div>
-                <div class="profile-pin" style="top: 70%; left: 25%; animation-delay: 0.5s;">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100&h=100" alt="Sophia">
-                </div>
-            `;
-
-                // 3. Reveal UI Elements
-                placeBubbleContainer.style.display = 'flex';
-                setTimeout(() => {
-                    placeBubbleContainer.classList.add('visible');
-                }, 50); // slight delay to allow display flex to apply before opacity transition
-
-                setTimeout(() => {
-                    friendsFeed.style.display = 'block';
-                }, 600); // after bubble animates
+                friendsSection.style.display = 'block';
+                setTimeout(function () {
+                    document.getElementById('placeBubbleContainer').classList.add('visible');
+                }, 50);
             }
 
             searchBtn.addEventListener('click', executeSearch);
             searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') executeSearch();
+            });
+
+            // --- Location autocomplete: real cities/states, standardized (City, State) ---
+            const LOCATION_OPTIONS = [
+                'Chapel Hill, NC', 'Raleigh, NC', 'Durham, NC', 'Charlotte, NC', 'Greensboro, NC',
+                'Wilmington, NC', 'Asheville, NC', 'Cary, NC', 'Winston-Salem, NC', 'Fayetteville, NC',
+                'New York, NY', 'Brooklyn, NY', 'Buffalo, NY', 'Rochester, NY',
+                'Los Angeles, CA', 'San Francisco, CA', 'San Diego, CA', 'San Jose, CA', 'Oakland, CA',
+                'Chicago, IL', 'Boston, MA', 'Cambridge, MA', 'Philadelphia, PA', 'Pittsburgh, PA',
+                'Houston, TX', 'Austin, TX', 'Dallas, TX', 'San Antonio, TX',
+                'Seattle, WA', 'Portland, OR', 'Denver, CO', 'Boulder, CO',
+                'Atlanta, GA', 'Miami, FL', 'Orlando, FL', 'Tampa, FL',
+                'Washington, DC', 'Baltimore, MD', 'Ann Arbor, MI', 'Detroit, MI',
+                'Minneapolis, MN', 'Madison, WI', 'Nashville, TN', 'Memphis, TN',
+                'New Orleans, LA', 'Phoenix, AZ', 'Tucson, AZ', 'Albuquerque, NM',
+                'Columbus, OH', 'Cleveland, OH', 'Cincinnati, OH', 'Indianapolis, IN',
+                'Charleston, SC', 'Columbia, SC', 'Richmond, VA', 'Virginia Beach, VA'
+            ];
+
+            const locationDropdown = document.getElementById('locationDropdown');
+            const searchWrap = document.getElementById('locationSearchWrap');
+
+            function capitalizeMatch(text, query) {
+                if (!query) return text;
+                const i = text.toLowerCase().indexOf(query.toLowerCase());
+                if (i < 0) return text;
+                return text.slice(0, i) + text.slice(i, i + query.length) + text.slice(i + query.length);
+            }
+
+            function showLocationDropdown() {
+                const q = searchInput.value.trim().toLowerCase();
+                if (!q) { locationDropdown.style.display = 'none'; return; }
+                const filtered = LOCATION_OPTIONS.filter(function (loc) {
+                    return loc.toLowerCase().indexOf(q) >= 0;
+                }).slice(0, 8);
+                if (filtered.length === 0) { locationDropdown.style.display = 'none'; return; }
+                locationDropdown.innerHTML = filtered.map(function (loc) {
+                    const idx = loc.toLowerCase().indexOf(q);
+                    const before = loc.slice(0, idx);
+                    const match = loc.slice(idx, idx + q.length);
+                    const after = loc.slice(idx + q.length);
+                    return '<div class="location-dropdown-item" data-value="' + loc.replace(/"/g, '&quot;') + '">' + before + '<strong>' + match + '</strong>' + after + '</div>';
+                }).join('');
+                const rect = searchWrap.getBoundingClientRect();
+                locationDropdown.style.top = (rect.bottom + 6) + 'px';
+                locationDropdown.style.left = rect.left + 'px';
+                locationDropdown.style.width = rect.width + 'px';
+                locationDropdown.style.display = 'block';
+            }
+
+            function hideLocationDropdown() {
+                setTimeout(function () { locationDropdown.style.display = 'none'; }, 150);
+            }
+
+            searchInput.addEventListener('input', showLocationDropdown);
+            searchInput.addEventListener('focus', function () { if (searchInput.value.trim()) showLocationDropdown(); });
+            searchInput.addEventListener('blur', hideLocationDropdown);
+
+            locationDropdown.addEventListener('click', function (e) {
+                const item = e.target.closest('.location-dropdown-item');
+                if (item) {
+                    searchInput.value = item.getAttribute('data-value');
+                    locationDropdown.style.display = 'none';
+                }
             });
 
         </script>
