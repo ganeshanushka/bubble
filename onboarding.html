@@ -28,14 +28,16 @@
         .ob-bubble {
             position: absolute;
             z-index: 1;
-            width: min(440px, 92vw);
+            width: min(480px, 95vw);
             aspect-ratio: 1/1;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            text-align: center;
             background: radial-gradient(ellipse 90% 90% at 40% 30%, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.82));
             border-radius: 50%;
-            padding: 3rem;
+            padding: 3.5rem;
             box-sizing: border-box;
             box-shadow:
                 inset 0 0 16px rgba(255, 255, 255, 0.7),
@@ -172,7 +174,8 @@
         .ob-input-row {
             display: flex;
             gap: 0.75rem;
-            align-items: flex-start;
+            align-items: center;
+            width: 100%;
         }
 
         .ob-input-row .bubble-input {
