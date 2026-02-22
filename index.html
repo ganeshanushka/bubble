@@ -137,7 +137,7 @@
         if (logoEl && logoTitle && i < word.length) {
           logoEl.textContent += word[i];
           i++;
-          setTimeout(type, 120);
+          setTimeout(type, 90 + Math.random() * 80);
         } else if (logoTitle) {
           logoTitle.classList.add('logo-done');
           if (bubbleWrap) bubbleWrap.classList.add('reveal');
@@ -193,8 +193,8 @@
             if (floatContainer) floatContainer.style.display = 'none';
             var loginPopup = document.getElementById('loginPopup');
             if (loginPopup) loginPopup.classList.remove('hidden');
-          }, 400); // Wait for fade out
-        }, 650); // Significant delay to clearly show it popped empty space
+          }, 600); // Wait for fade out
+        }, 900); // Significant delay to clearly show it popped empty space
       });
 
       // Handle form validation & Step Transition

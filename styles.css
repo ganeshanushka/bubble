@@ -499,7 +499,7 @@ body {
   background: rgba(19, 41, 75, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  animation: fadeIn 0.4s ease-out;
+  animation: fadeInOverlay 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .popup-box {
@@ -663,26 +663,52 @@ body {
   }
 }
 
-@keyframes popBox {
-  0% {
-    transform: scale(0.8);
+@keyframes fadeInOverlay {
+  from {
     opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
   }
 
-  60% {
-    transform: scale(1.05);
+  to {
     opacity: 1;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes popBox {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+    filter: blur(8px);
+  }
+
+  50% {
+    filter: blur(2px);
+    opacity: 0.9;
+  }
+
+  70% {
+    transform: scale(1.06);
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  85% {
+    transform: scale(0.97);
   }
 
   100% {
     transform: scale(1);
     opacity: 1;
+    filter: blur(0px);
   }
 }
 
 /* Popping animations for main bubble and fading out items */
 .popping-main {
-  animation: popMain 0.45s ease-out forwards !important;
+  animation: popMain 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards !important;
   pointer-events: none;
 }
 
@@ -690,31 +716,43 @@ body {
   0% {
     transform: scale(1);
     opacity: 1;
-    filter: brightness(1);
+    filter: brightness(1) blur(0px);
   }
 
-  60% {
-    transform: scale(2);
+  30% {
+    transform: scale(1.15);
     opacity: 1;
-    filter: brightness(1.2);
+    filter: brightness(1.15) blur(0px);
+  }
+
+  55% {
+    transform: scale(1.7);
+    opacity: 0.9;
+    filter: brightness(1.4) blur(1px);
+  }
+
+  80% {
+    transform: scale(2.2);
+    opacity: 0.4;
+    filter: brightness(1.8) blur(4px);
   }
 
   100% {
-    transform: scale(2.3);
+    transform: scale(2.6);
     opacity: 0;
-    filter: brightness(1.5);
+    filter: brightness(2) blur(8px);
   }
 }
 
 .spray-drop {
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(200, 230, 255, 0.5));
+  box-shadow: 0 0 6px rgba(150, 210, 255, 0.7);
   border-radius: 50%;
   pointer-events: none;
-  animation: sprayAnim 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  animation: sprayAnim 1s cubic-bezier(0.0, 0.6, 0.2, 1) forwards;
   left: 50%;
   top: 50%;
   z-index: 10;
@@ -722,8 +760,12 @@ body {
 
 @keyframes sprayAnim {
   0% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1.2);
     opacity: 1;
+  }
+
+  60% {
+    opacity: 0.8;
   }
 
   100% {
