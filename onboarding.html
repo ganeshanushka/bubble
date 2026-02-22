@@ -252,8 +252,9 @@
 
 <body>
     <a class="ob-top-logo" href="index.html">Bubble</a>
-    <!-- School dropdown rendered on body -->
+    <!-- Dropdowns rendered on body -->
     <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
+    <div id="majorDropdown" class="school-dropdown" style="display:none;"></div>
 
     <form id="onboardingForm" novalidate>
         <div class="ob-page">
@@ -347,11 +348,16 @@
             <div class="ob-bubble upcoming" id="ob-bubble-7">
                 <div class="ob-step-badge">Step 7 of 8</div>
                 <div class="ob-question">What's your major?</div>
-                <div class="ob-desc">Find peers with similar academic interests.</div>
-                <div class="ob-input-row">
-                    <input type="text" id="majorInput" class="bubble-input" placeholder="e.g. Computer Science">
-                    <button type="button" class="ob-next-btn" data-step="7">Next →</button>
-                </div>
+                <div class="ob-desc">Search to find peers with similar academic interests.</div>
+
+                <input type="text" id="majorSearchInput" class="bubble-input" placeholder="Search major..."
+                    autocomplete="off">
+                <input type="hidden" id="majorInput" name="major">
+
+                <p id="majorError" class="error-msg hidden" style="margin-top:0.4rem; font-size:0.82rem;">Please select
+                    a major from the list.</p>
+                <button type="button" class="ob-next-btn" id="majorNextBtn" style="margin-top:1.1rem; width:100%;">Next
+                    →</button>
                 <div class="ob-answer-display" id="ans-7"></div>
             </div>
 
@@ -505,6 +511,79 @@
             schoolError.classList.add('hidden');
             getAns(6).textContent = '✓ ' + schoolInput.value;
             advanceTo(7);
+        });
+
+        // --- Major dropdown ---
+        var ALL_MAJORS = [
+            "Accounting", "Architecture", "Art History", "Biology", "Business Administration",
+            "Chemical Engineering", "Chemistry", "Civil Engineering", "Communications", "Computer Science",
+            "Criminal Justice", "Data Science", "Economics", "Education", "Electrical Engineering",
+            "English", "Environmental Science", "Finance", "Graphic Design", "History",
+            "Information Technology", "International Relations", "Journalism", "Kinesiology", "Linguistics",
+            "Marketing", "Mathematics", "Mechanical Engineering", "Music", "Nursing", "Philosophy",
+            "Physics", "Political Science", "Pre-Med", "Pre-Law", "Psychology", "Public Health",
+            "Sociology", "Software Engineering", "Statistics", "Theater Arts"
+        ];
+
+        var majorSearchInput = document.getElementById('majorSearchInput');
+        var majorInput = document.getElementById('majorInput');
+        var majorDropdown = document.getElementById('majorDropdown');
+        var majorError = document.getElementById('majorError');
+        var majorNextBtn = document.getElementById('majorNextBtn');
+
+        function positionMajorDropdown() {
+            var rect = majorSearchInput.getBoundingClientRect();
+            majorDropdown.style.top = (rect.bottom + 6) + 'px';
+            majorDropdown.style.left = rect.left + 'px';
+            majorDropdown.style.width = rect.width + 'px';
+        }
+
+        function renderMajorDropdown(query) {
+            majorDropdown.innerHTML = '';
+            if (!query) { majorDropdown.style.display = 'none'; return; }
+            var filtered = ALL_MAJORS.filter(m => m.toLowerCase().includes(query.toLowerCase())).slice(0, 8);
+            if (!filtered.length) { majorDropdown.style.display = 'none'; return; }
+            filtered.forEach(function (major) {
+                var item = document.createElement('div');
+                item.className = 'school-dropdown-item'; // Reuse same CSS class
+                var idx = major.toLowerCase().indexOf(query.toLowerCase());
+                item.innerHTML = major.slice(0, idx) + '<strong>' + major.slice(idx, idx + query.length) + '</strong>' + major.slice(idx + query.length);
+                item.addEventListener('mousedown', function (e) {
+                    e.preventDefault();
+                    majorSearchInput.value = major;
+                    majorInput.value = major;
+                    majorDropdown.style.display = 'none';
+                    majorError.classList.add('hidden');
+                });
+                majorDropdown.appendChild(item);
+            });
+            positionMajorDropdown();
+            majorDropdown.style.display = 'block';
+        }
+
+        majorSearchInput.addEventListener('input', function () { majorInput.value = ''; renderMajorDropdown(this.value.trim()); });
+        majorSearchInput.addEventListener('blur', function () { setTimeout(() => { majorDropdown.style.display = 'none'; }, 150); });
+        majorSearchInput.addEventListener('focus', function () { if (this.value.trim()) renderMajorDropdown(this.value.trim()); });
+
+        majorNextBtn.addEventListener('click', function () {
+            if (!majorInput.value.trim()) {
+                majorError.classList.remove('hidden');
+                majorSearchInput.focus();
+                return;
+            }
+            majorError.classList.add('hidden');
+            getAns(7).textContent = '✓ ' + majorInput.value;
+            advanceTo(8);
+        });
+
+        // Reposition dropdowns on resize/scroll
+        window.addEventListener('resize', function () {
+            if (schoolDropdown.style.display !== 'none') positionDropdown();
+            if (majorDropdown.style.display !== 'none') positionMajorDropdown();
+        });
+        window.addEventListener('scroll', function () {
+            if (schoolDropdown.style.display !== 'none') positionDropdown();
+            if (majorDropdown.style.display !== 'none') positionMajorDropdown();
         });
 
         // Submit
