@@ -938,6 +938,7 @@ body {
   top: 0;
   right: 0;
   z-index: 1000;
+  pointer-events: none;
 }
 
 .profile-btn {
@@ -957,6 +958,7 @@ body {
     0 4px 12px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  pointer-events: auto;
 }
 
 .profile-btn:hover {
