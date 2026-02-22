@@ -1133,3 +1133,183 @@ body {
   border-radius: 2rem;
   width: 100%;
 }
+
+/* --- Place Search & Bubbles --- */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0.5rem;
+  z-index: 20;
+  position: relative;
+}
+
+.glass-search-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  background: radial-gradient(ellipse 90% 90% at 40% 25%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  border-radius: 2rem;
+  padding: 0.5rem 0.8rem;
+  box-shadow:
+    inset 0 0 16px rgba(255, 255, 255, 0.8),
+    0 10px 24px rgba(75, 156, 211, 0.15),
+    0 0 0 1.5px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  transition: box-shadow 0.3s ease;
+}
+
+.glass-search-box:focus-within {
+  box-shadow:
+    inset 0 0 16px rgba(255, 255, 255, 0.8),
+    0 12px 30px rgba(75, 156, 211, 0.25),
+    0 0 0 2px rgba(123, 175, 212, 0.5);
+}
+
+.search-icon {
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  opacity: 0.6;
+}
+
+.glass-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  color: #13294B;
+  padding: 0.5rem;
+}
+
+.glass-search-box input::placeholder {
+  color: #889;
+}
+
+#searchBtn {
+  background: linear-gradient(135deg, #7BAFD4, #4B9CD3);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#searchBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(75, 156, 211, 0.4);
+}
+
+/* Big Place Bubble */
+.place-bubble-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10;
+}
+
+.place-bubble-container.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.massive-bubble {
+  position: relative;
+  width: min(440px, 90vw);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(ellipse 80% 80% at 30% 20%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.65));
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.9),
+    inset 10px 0 35px rgba(75, 156, 211, 0.2),
+    inset -10px 0 35px rgba(123, 175, 212, 0.15),
+    0 16px 40px rgba(19, 41, 75, 0.10),
+    0 0 0 2px rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px);
+  padding: 1rem;
+}
+
+.place-title {
+  position: absolute;
+  top: 10%;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #13294B;
+  text-align: center;
+  margin: 0;
+  padding: 0 1rem;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+}
+
+.bubble-pins-wrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  /* Pins stay inside */
+}
+
+.profile-pin {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  box-shadow:
+    0 4px 12px rgba(19, 41, 75, 0.2),
+    0 0 0 3px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  transform: translate(-50%, -50%) scale(0);
+  animation: popInPin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 5;
+}
+
+.profile-pin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-pin.pin-large {
+  width: 85px;
+  height: 85px;
+  box-shadow:
+    0 6px 16px rgba(19, 41, 75, 0.25),
+    0 0 0 4px rgba(255, 255, 255, 0.95);
+}
+
+@keyframes popInPin {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.feed-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #13294B;
+  margin: 2rem 0 -1rem;
+  padding: 0 1.5rem;
+}

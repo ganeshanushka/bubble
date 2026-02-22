@@ -19,79 +19,94 @@
             </a>
         </nav>
 
-        <div class="hero" style="padding-top: 1rem;">
-            <h1 class="logo fade-in">Profiles</h1>
+        <!-- New Location Search Bar -->
+        <div class="search-container fade-in" style="animation-delay: 0.1s;">
+            <div class="glass-search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="locationSearch" placeholder="Search for places (e.g. The Quad, Library...)">
+                <button id="searchBtn">Find Bubbles</button>
+            </div>
         </div>
 
-        <div class="profiles-container fade-in" style="animation-delay: 0.3s;">
-
-            <!-- Profile 1 -->
-            <a href="user-profile.html?user=isabella" class="profile-bubble-link">
-                <div class="profile-card">
-                    <div class="profile-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
-                            alt="Isabella">
-                    </div>
-                    <h2 class="profile-name">Isabella, 21</h2>
-                    <p class="profile-major">Psychology</p>
-                    <p class="profile-bio">Coffee addict, reading in the quad, always exploring vintage shops.</p>
-                    <button class="btn-add btn-connect">Connect</button>
-                </div>
-            </a>
-
-            <!-- Profile 2 -->
-            <a href="user-profile.html?user=liam" class="profile-bubble-link">
-                <div class="profile-card">
-                    <div class="profile-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
-                            alt="Liam">
-                    </div>
-                    <h2 class="profile-name">Liam, 22</h2>
-                    <p class="profile-major">Computer Science</p>
-                    <p class="profile-bio">Hackathons, climbing gym, and building pointless apps. Let's code.</p>
-                    <button class="btn-add btn-connect">Connect</button>
-                </div>
-            </a>
-
-            <!-- Profile 3 -->
-            <a href="user-profile.html?user=sophia" class="profile-bubble-link">
-                <div class="profile-card">
-                    <div class="profile-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
-                            alt="Sophia">
-                    </div>
-                    <h2 class="profile-name">Sophia, 20</h2>
-                    <p class="profile-major">Architecture</p>
-                    <p class="profile-bio">Model building at 3 AM. Looking for study buddies who bring snacks.</p>
-                    <button class="btn-add btn-connect">Connect</button>
-                </div>
-            </a>
-
+        <!-- Dynamic Place Bubble (Hidden until search) -->
+        <div id="placeBubbleContainer" class="place-bubble-container" style="display: none;">
+            <div class="massive-bubble">
+                <h2 id="placeBubbleTitle" class="place-title">The Quad</h2>
+                <!-- Pins will be injected here via JS -->
+                <div id="bubblePins" class="bubble-pins-wrapper"></div>
+            </div>
         </div>
-    </div>
 
-    <div id="floatBubbles" class="float-bubbles"></div>
+        <!-- Friends Feed (Hidden until search) -->
+        <div id="friendsFeed" style="display: none;">
+            <h2 id="friendsTitle" class="feed-title fade-in">Friends in your bubble</h2>
+            <div class="profiles-container fade-in">
 
-    <script src="app.js"></script>
-    <script>
-        document.body.classList.add('bubble-done');
+                <!-- Profile 1 -->
+                <a href="user-profile.html?user=isabella" class="profile-bubble-link">
+                    <div class="profile-card">
+                        <div class="profile-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
+                                alt="Isabella">
+                        </div>
+                        <h2 class="profile-name">Isabella, 21</h2>
+                        <p class="profile-major">Psychology</p>
+                        <p class="profile-bio">Coffee addict, reading in the quad, always exploring vintage shops.</p>
+                        <button class="btn-add btn-connect">Connect</button>
+                    </div>
+                </a>
 
-        // Update Nav from LocalStorage
-        const storedProfile = localStorage.getItem('bubble_user_profile');
-        if (storedProfile) {
-            const profile = JSON.parse(storedProfile);
-            if (profile.name) {
-                document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
-                document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
+                <!-- Profile 2 -->
+                <a href="user-profile.html?user=liam" class="profile-bubble-link">
+                    <div class="profile-card">
+                        <div class="profile-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
+                                alt="Liam">
+                        </div>
+                        <h2 class="profile-name">Liam, 22</h2>
+                        <p class="profile-major">Computer Science</p>
+                        <p class="profile-bio">Hackathons, climbing gym, and building pointless apps. Let's code.</p>
+                        <button class="btn-add btn-connect">Connect</button>
+                    </div>
+                </a>
 
-                // Add a card for the user in the feed
-                const container = document.querySelector('.profiles-container');
-                if (container) {
-                    const cardAnchor = document.createElement('a');
-                    cardAnchor.href = 'my-profile.html';
-                    cardAnchor.className = 'profile-bubble-link';
+                <!-- Profile 3 -->
+                <a href="user-profile.html?user=sophia" class="profile-bubble-link">
+                    <div class="profile-card">
+                        <div class="profile-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
+                                alt="Sophia">
+                        </div>
+                        <h2 class="profile-name">Sophia, 20</h2>
+                        <p class="profile-major">Architecture</p>
+                        <p class="profile-bio">Model building at 3 AM. Looking for study buddies who bring snacks.</p>
+                        <button class="btn-add btn-connect">Connect</button>
+                    </div>
+                </a>
 
-                    cardAnchor.innerHTML = `
+            </div> <!-- End friendsFeed -->
+        </div>
+
+        <script src="app.js"></script>
+        <script>
+            document.body.classList.add('bubble-done');
+
+            // Update Nav from LocalStorage
+            const storedProfile = localStorage.getItem('bubble_user_profile');
+            if (storedProfile) {
+                const profile = JSON.parse(storedProfile);
+                if (profile.name) {
+                    document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
+                    document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
+
+                    // Add a card for the user in the feed
+                    const container = document.querySelector('.profiles-container');
+                    if (container) {
+                        const cardAnchor = document.createElement('a');
+                        cardAnchor.href = 'my-profile.html';
+                        cardAnchor.className = 'profile-bubble-link';
+
+                        cardAnchor.innerHTML = `
                         <div class="profile-card you-card">
                             <div class="profile-img-wrap" style="position: relative;">
                                 <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
@@ -104,24 +119,56 @@
                             <button class="btn-add btn-connect">My Profile</button>
                         </div>
                     `;
-                    container.prepend(cardAnchor);
+                        container.prepend(cardAnchor);
+                    }
                 }
             }
-        }
 
-        var floatContainer = document.getElementById('floatBubbles');
-        if (floatContainer) {
-            for (var b = 0; b < 18; b++) {
-                var el = document.createElement('div');
-                el.className = 'float-bubble';
-                el.style.left = Math.random() * 100 + '%';
-                el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
-                el.style.animationDelay = (Math.random() * 5) + 's';
-                el.style.animationDuration = (2 + Math.random() * 2) + 's';
-                floatContainer.appendChild(el);
+            // --- Location Search Logic ---
+            const searchInput = document.getElementById('locationSearch');
+            const searchBtn = document.getElementById('searchBtn');
+            const placeBubbleContainer = document.getElementById('placeBubbleContainer');
+            const placeBubbleTitle = document.getElementById('placeBubbleTitle');
+            const bubblePins = document.getElementById('bubblePins');
+            const friendsFeed = document.getElementById('friendsFeed');
+
+            function executeSearch() {
+                const query = searchInput.value.trim();
+                if (!query) return;
+
+                // 1. Update Place Bubble Title
+                placeBubbleTitle.textContent = query;
+
+                // 2. Generate random pins based on available standard profiles
+                bubblePins.innerHTML = `
+                <div class="profile-pin" style="top: 20%; left: 30%; animation-delay: 0.1s;">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100" alt="Isabella">
+                </div>
+                <div class="profile-pin pin-large" style="top: 50%; left: 60%; animation-delay: 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100" alt="Liam">
+                </div>
+                <div class="profile-pin" style="top: 70%; left: 25%; animation-delay: 0.5s;">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100&h=100" alt="Sophia">
+                </div>
+            `;
+
+                // 3. Reveal UI Elements
+                placeBubbleContainer.style.display = 'flex';
+                setTimeout(() => {
+                    placeBubbleContainer.classList.add('visible');
+                }, 50); // slight delay to allow display flex to apply before opacity transition
+
+                setTimeout(() => {
+                    friendsFeed.style.display = 'block';
+                }, 600); // after bubble animates
             }
-        }
-    </script>
+
+            searchBtn.addEventListener('click', executeSearch);
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') executeSearch();
+            });
+
+        </script>
 </body>
 
 </html>
