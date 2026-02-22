@@ -261,15 +261,31 @@
             })
             .catch(() => { allSchools = []; });
 
+        function positionDropdown() {
+            var rect = schoolSearchInput.getBoundingClientRect();
+            schoolDropdown.style.top = (rect.bottom + 6) + 'px';
+            schoolDropdown.style.left = rect.left + 'px';
+            schoolDropdown.style.width = rect.width + 'px';
+        }
+
         function renderDropdown(query) {
             schoolDropdown.innerHTML = '';
             if (!query || query.length < 1) { schoolDropdown.style.display = 'none'; return; }
+            if (allSchools.length === 0) {
+                var loading = document.createElement('div');
+                loading.className = 'school-dropdown-item';
+                loading.textContent = 'Loading schools...';
+                loading.style.color = '#999';
+                schoolDropdown.appendChild(loading);
+                positionDropdown();
+                schoolDropdown.style.display = 'block';
+                return;
+            }
             var filtered = allSchools.filter(s => s.toLowerCase().includes(query.toLowerCase())).slice(0, 8);
             if (filtered.length === 0) { schoolDropdown.style.display = 'none'; return; }
             filtered.forEach(function (school) {
                 var item = document.createElement('div');
                 item.className = 'school-dropdown-item';
-                // Bold-highlight the matching part
                 var idx = school.toLowerCase().indexOf(query.toLowerCase());
                 item.innerHTML = school.slice(0, idx)
                     + '<strong>' + school.slice(idx, idx + query.length) + '</strong>'
@@ -283,12 +299,12 @@
                 });
                 schoolDropdown.appendChild(item);
             });
+            positionDropdown();
             schoolDropdown.style.display = 'block';
         }
 
         if (schoolSearchInput) {
             schoolSearchInput.addEventListener('input', function () {
-                // Clear hidden val when user edits text
                 schoolInput.value = '';
                 renderDropdown(this.value.trim());
             });
