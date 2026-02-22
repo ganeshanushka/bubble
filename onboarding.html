@@ -98,6 +98,8 @@
     </div>
 
     <div id="floatBubbles" class="float-bubbles" style="display: none;"></div>
+    <!-- School dropdown rendered here on body to escape popup overflow:hidden -->
+    <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
 
     <!-- Onboarding Popup -->
     <div class="popup-overlay fade-in">
@@ -181,7 +183,7 @@
                                 placeholder="Search for your college...">
                             <!-- Hidden input holds the confirmed selected value -->
                             <input type="text" id="schoolInput" style="display:none;">
-                            <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
+                            <!-- Dropdown is rendered on body to escape overflow:hidden -->
                         </div>
                         <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem;">Please select a school
                             from the list.</p>
@@ -246,20 +248,50 @@
         showStep(currentStep);
 
         // --- Custom School Search Dropdown ---
-        var allSchools = [];
+        var FALLBACK_SCHOOLS = [
+            "Auburn University", "Arizona State University", "Boston College", "Boston University",
+            "Brigham Young University", "Brown University", "California Institute of Technology",
+            "Carnegie Mellon University", "Case Western Reserve University", "Clemson University",
+            "Columbia University", "Cornell University", "Dartmouth College", "Duke University",
+            "Emory University", "Florida State University", "Fordham University", "Georgetown University",
+            "Georgia Institute of Technology", "Harvard University", "Indiana University",
+            "Johns Hopkins University", "Lehigh University", "Louisiana State University",
+            "Michigan State University", "MIT", "New York University", "Northeastern University",
+            "Northwestern University", "Notre Dame", "Ohio State University", "Penn State",
+            "Princeton University", "Purdue University", "Rice University", "Rutgers University",
+            "Stanford University", "Syracuse University", "Temple University", "Texas A&M University",
+            "Tulane University", "UC Berkeley", "UC Davis", "UC Irvine", "UC Los Angeles",
+            "UC San Diego", "UC Santa Barbara", "University of Alabama", "University of Arizona",
+            "University of Chicago", "University of Colorado Boulder", "University of Connecticut",
+            "University of Florida", "University of Georgia", "University of Houston",
+            "University of Illinois Urbana-Champaign", "University of Iowa",
+            "University of Kansas", "University of Kentucky", "University of Maryland",
+            "University of Massachusetts Amherst", "University of Miami",
+            "University of Michigan", "University of Minnesota", "University of Missouri",
+            "University of Nebraska", "University of North Carolina at Chapel Hill",
+            "University of Oregon", "University of Pennsylvania", "University of Pittsburgh",
+            "University of Rochester", "University of South Carolina", "University of Southern California",
+            "University of Tennessee", "University of Texas at Austin", "University of Utah",
+            "University of Virginia", "University of Washington", "University of Wisconsin-Madison",
+            "Vanderbilt University", "Villanova University", "Virginia Tech", "Wake Forest University",
+            "Washington University in St. Louis", "William & Mary", "Yale University"
+        ];
+        var allSchools = FALLBACK_SCHOOLS.slice().sort();
+
         var schoolSearchInput = document.getElementById('schoolSearchInput');
         var schoolInput = document.getElementById('schoolInput');
         var schoolDropdown = document.getElementById('schoolDropdown');
         var schoolError = document.getElementById('schoolError');
         var schoolNextBtn = document.getElementById('schoolNextBtn');
 
-        // Fetch schools from API
+        // Try to augment with API data
         fetch('http://universities.hipolabs.com/search?country=United+States')
             .then(r => r.json())
             .then(data => {
-                allSchools = [...new Set(data.map(item => item.name))].sort();
+                var apiSchools = [...new Set(data.map(item => item.name))];
+                allSchools = [...new Set([...FALLBACK_SCHOOLS, ...apiSchools])].sort();
             })
-            .catch(() => { allSchools = []; });
+            .catch(() => { /* keep fallback */ });
 
         function positionDropdown() {
             var rect = schoolSearchInput.getBoundingClientRect();
