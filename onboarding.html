@@ -108,7 +108,7 @@
                     <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
                 </div>
 
-                <form id="onboardingForm" class="login-form">
+                <form id="onboardingForm" class="login-form" novalidate>
                     <!-- Step 1: Name -->
                     <div class="step-container active" id="ob-step-1">
                         <h2 class="question-title">What's your full name?</h2>
@@ -180,7 +180,7 @@
                             <input type="text" id="schoolSearchInput" class="bubble-input" autocomplete="off"
                                 placeholder="Search for your college...">
                             <!-- Hidden input holds the confirmed selected value -->
-                            <input type="text" id="schoolInput" style="display:none;" required>
+                            <input type="text" id="schoolInput" style="display:none;">
                             <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
                         </div>
                         <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem;">Please select a school
@@ -209,7 +209,7 @@
                         <p class="question-desc">Write a short bio for your profile card.</p>
                         <textarea id="bioInput" class="bubble-input"
                             style="height: 100px; resize: none; width: 100%; border-radius: 1rem; padding: 1rem;"
-                            placeholder="Coffee addict, hackathon lover..." required></textarea>
+                            placeholder="Coffee addict, hackathon lover..."></textarea>
                         <div class="btn-group" style="margin-top: 1rem;">
                             <button type="button" class="btn-add btn-secondary back-btn">Back</button>
                             <button type="submit" class="btn-add" style="flex: 1;">Complete Profile</button>
@@ -340,42 +340,41 @@
 
         // Handle enter key to go next
         document.getElementById('onboardingForm').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
                 var currentInput = document.getElementById('ob-step-' + currentStep).querySelector('input, select');
-                if (currentInput && !currentInput.reportValidity()) return;
+                if (currentStep === 6) return; // School step has its own button handler
+                if (currentInput && !currentInput.value.trim()) { currentInput.focus(); return; }
 
                 if (currentStep < totalSteps) {
                     currentStep++;
                     showStep(currentStep);
                 } else if (currentStep === totalSteps) {
-                    // Allow natural submit if valid
-                    if (currentInput.reportValidity()) {
-                        document.getElementById('onboardingForm').dispatchEvent(new Event('submit', { cancelable: true }));
-                    }
+                    document.getElementById('onboardingForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
                 }
             }
         });
 
         document.getElementById('onboardingForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            // Only proceed if native validation passes
-            if (this.checkValidity()) {
-                // Save profile data
-                const profileData = {
-                    name: document.getElementById('nameInput').value,
-                    age: document.getElementById('ageInput').value,
-                    gender: document.getElementById('genderInput').value,
-                    secondaryEmail: document.getElementById('secondaryEmailInput').value,
-                    phone: document.getElementById('phoneInput').value,
-                    school: document.getElementById('schoolInput').value,
-                    major: document.getElementById('majorInput').value,
-                    bio: document.getElementById('bioInput').value
-                };
-                localStorage.setItem('bubble_user_profile', JSON.stringify(profileData));
-
-                window.location.href = 'profiles.html';
+            var bio = document.getElementById('bioInput').value.trim();
+            if (!bio) {
+                document.getElementById('bioInput').focus();
+                return;
             }
+            // Save profile data
+            const profileData = {
+                name: document.getElementById('nameInput').value,
+                age: document.getElementById('ageInput').value,
+                gender: document.getElementById('genderInput').value,
+                secondaryEmail: document.getElementById('secondaryEmailInput').value,
+                phone: document.getElementById('phoneInput').value,
+                school: document.getElementById('schoolInput').value,
+                major: document.getElementById('majorInput').value,
+                bio: bio
+            };
+            localStorage.setItem('bubble_user_profile', JSON.stringify(profileData));
+            window.location.href = 'profiles.html';
         });
     </script>
 </body>
