@@ -169,14 +169,6 @@
             margin-bottom: 1.25rem;
         }
 
-        .ob-answer-display {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #4B9CD3;
-            margin-top: 0.5rem;
-            min-height: 1.4em;
-        }
-
         .ob-input-row {
             display: flex;
             gap: 0.75rem;
@@ -291,7 +283,6 @@
                         autocomplete="name">
                     <button type="button" class="ob-next-btn" data-step="1">Next →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-1"></div>
             </div>
 
             <!-- Bubble 2: Age -->
@@ -304,7 +295,6 @@
                     <input type="number" id="ageInput" class="bubble-input" min="18" max="99" placeholder="e.g. 21">
                     <button type="button" class="ob-next-btn" data-step="2">Next →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-2"></div>
             </div>
 
             <!-- Bubble 3: Gender -->
@@ -323,7 +313,6 @@
                     </select>
                     <button type="button" class="ob-next-btn" data-step="3">Next →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-3"></div>
             </div>
 
             <!-- Bubble 4: Secondary Email -->
@@ -337,7 +326,6 @@
                         placeholder="e.g. personal@gmail.com">
                     <button type="button" class="ob-next-btn" data-step="4">Next →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-4"></div>
             </div>
 
             <!-- Bubble 5: Phone -->
@@ -350,7 +338,6 @@
                     <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555">
                     <button type="button" class="ob-next-btn" data-step="5">Next →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-5"></div>
             </div>
 
             <!-- Bubble 6: School -->
@@ -370,7 +357,6 @@
                     <button type="button" class="ob-next-btn" id="schoolNextBtn" style="margin-top:0; flex:1;">Next
                         →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-6"></div>
             </div>
 
             <!-- Bubble 7: Major -->
@@ -390,7 +376,6 @@
                     <button type="button" class="ob-next-btn" id="majorNextBtn" style="margin-top:0; flex:1;">Next
                         →</button>
                 </div>
-                <div class="ob-answer-display" id="ans-7"></div>
             </div>
 
             <!-- Bubble 8: Bio -->
@@ -454,8 +439,7 @@
                     setTimeout(function () { if (input) input.style.outline = ''; }, 1000);
                     return;
                 }
-                // Show answer summary in bubble
-                getAns(step).textContent = '✓ ' + input.value;
+
                 if (step < totalSteps) advanceTo(step + 1);
             });
         });
@@ -555,7 +539,6 @@
                 return;
             }
             schoolError.classList.add('hidden');
-            getAns(6).textContent = '✓ ' + schoolInput.value;
             advanceTo(7);
         });
 
@@ -618,7 +601,6 @@
                 return;
             }
             majorError.classList.add('hidden');
-            getAns(7).textContent = '✓ ' + majorInput.value;
             advanceTo(8);
         });
 
