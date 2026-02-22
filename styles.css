@@ -980,3 +980,33 @@ body {
   color: #4B9CD3;
   font-weight: 700;
 }
+
+/* --- Vertical profile list --- */
+.profiles-container .profile-card {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: left;
+  padding: 1.25rem 1.5rem;
+}
+
+.profiles-container .profile-img-wrap {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+}
+
+.profiles-container .profile-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profiles-container .profile-card .btn-connect {
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
