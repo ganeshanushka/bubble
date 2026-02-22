@@ -209,6 +209,28 @@
             box-shadow: 0 6px 16px rgba(75, 156, 211, 0.4);
         }
 
+        .ob-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.2rem;
+            background: rgba(123, 175, 212, 0.15);
+            color: #4B9CD3;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            flex-shrink: 0;
+            margin-top: 1.1rem;
+        }
+
+        .ob-back-btn:hover {
+            background: rgba(123, 175, 212, 0.25);
+            transform: translateY(-1px);
+        }
+
         .ob-submit-btn {
             width: 100%;
             margin-top: 1rem;
@@ -278,6 +300,7 @@
                 <div class="ob-question">How old are you?</div>
                 <div class="ob-desc">You must be at least 18 to use Bubble.</div>
                 <div class="ob-input-row">
+                    <button type="button" class="ob-back-btn">←</button>
                     <input type="number" id="ageInput" class="bubble-input" min="18" max="99" placeholder="e.g. 21">
                     <button type="button" class="ob-next-btn" data-step="2">Next →</button>
                 </div>
@@ -290,6 +313,7 @@
                 <div class="ob-question">How do you identify?</div>
                 <div class="ob-desc">This helps us organize your discover feed.</div>
                 <div class="ob-input-row">
+                    <button type="button" class="ob-back-btn">←</button>
                     <select id="genderInput" class="bubble-input" style="appearance:none;">
                         <option value="" disabled selected>Select gender</option>
                         <option value="Woman">Woman</option>
@@ -308,6 +332,7 @@
                 <div class="ob-question">Any secondary email?</div>
                 <div class="ob-desc">For when your .edu email expires.</div>
                 <div class="ob-input-row">
+                    <button type="button" class="ob-back-btn">←</button>
                     <input type="email" id="secondaryEmailInput" class="bubble-input"
                         placeholder="e.g. personal@gmail.com">
                     <button type="button" class="ob-next-btn" data-step="4">Next →</button>
@@ -321,6 +346,7 @@
                 <div class="ob-question">What's your phone number?</div>
                 <div class="ob-desc">We use SMS to verify real students.</div>
                 <div class="ob-input-row">
+                    <button type="button" class="ob-back-btn">←</button>
                     <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555">
                     <button type="button" class="ob-next-btn" data-step="5">Next →</button>
                 </div>
@@ -339,8 +365,11 @@
                 </div>
                 <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem; font-size:0.82rem;">Please select
                     a school from the list.</p>
-                <button type="button" class="ob-next-btn" id="schoolNextBtn" style="margin-top:1.1rem; width:100%;">Next
-                    →</button>
+                <div class="ob-input-row" style="margin-top:1.1rem; width:100%;">
+                    <button type="button" class="ob-back-btn" style="margin-top:0;">←</button>
+                    <button type="button" class="ob-next-btn" id="schoolNextBtn" style="margin-top:0; flex:1;">Next
+                        →</button>
+                </div>
                 <div class="ob-answer-display" id="ans-6"></div>
             </div>
 
@@ -356,8 +385,11 @@
 
                 <p id="majorError" class="error-msg hidden" style="margin-top:0.4rem; font-size:0.82rem;">Please select
                     a major from the list.</p>
-                <button type="button" class="ob-next-btn" id="majorNextBtn" style="margin-top:1.1rem; width:100%;">Next
-                    →</button>
+                <div class="ob-input-row" style="margin-top:1.1rem; width:100%;">
+                    <button type="button" class="ob-back-btn" style="margin-top:0;">←</button>
+                    <button type="button" class="ob-next-btn" id="majorNextBtn" style="margin-top:0; flex:1;">Next
+                        →</button>
+                </div>
                 <div class="ob-answer-display" id="ans-7"></div>
             </div>
 
@@ -367,7 +399,11 @@
                 <div class="ob-question">Tell us about yourself</div>
                 <div class="ob-desc">Write a short bio for your profile card.</div>
                 <textarea id="bioInput" class="bubble-input" placeholder="Coffee addict, hackathon lover..."></textarea>
-                <button type="submit" class="ob-submit-btn">Complete Profile ✓</button>
+                <div class="ob-input-row" style="margin-top:1rem; width:100%;">
+                    <button type="button" class="ob-back-btn" style="margin-top:0;">←</button>
+                    <button type="submit" class="ob-submit-btn" style="margin-top:0; flex:1;">Complete Profile
+                        ✓</button>
+                </div>
             </div>
 
         </div>
@@ -421,6 +457,16 @@
                 // Show answer summary in bubble
                 getAns(step).textContent = '✓ ' + input.value;
                 if (step < totalSteps) advanceTo(step + 1);
+            });
+        });
+
+        // Generic back-btn handler
+        document.querySelectorAll('.ob-back-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var currentStepNum = parseInt(this.closest('.ob-bubble').id.split('-')[2]);
+                if (currentStepNum > 1) {
+                    advanceTo(currentStepNum - 1);
+                }
             });
         });
 
