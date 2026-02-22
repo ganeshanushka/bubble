@@ -933,3 +933,47 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
 }
+
+/* --- School Search Dropdown --- */
+.school-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 1rem;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(75, 156, 211, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 156, 211, 0.3) transparent;
+}
+
+.school-dropdown-item {
+  padding: 0.75rem 1.1rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  line-height: 1.4;
+}
+
+.school-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.school-dropdown-item:hover {
+  background: rgba(75, 156, 211, 0.1);
+  color: #13294B;
+}
+
+.school-dropdown-item strong {
+  color: #4B9CD3;
+  font-weight: 700;
+}

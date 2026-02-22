@@ -175,14 +175,19 @@
                     <div class="step-container" id="ob-step-6">
                         <h2 class="question-title">What school do you attend?</h2>
                         <p class="question-desc">Help us find students on your campus.</p>
-                        <input list="collegesList" type="text" id="schoolInput" class="bubble-input"
-                            placeholder="Search for your college..." required>
-                        <datalist id="collegesList">
-                            <!-- Populated by JS -->
-                        </datalist>
+                        <!-- Custom school search dropdown -->
+                        <div class="school-search-wrap" style="position: relative;">
+                            <input type="text" id="schoolSearchInput" class="bubble-input" autocomplete="off"
+                                placeholder="Search for your college...">
+                            <!-- Hidden input holds the confirmed selected value -->
+                            <input type="text" id="schoolInput" style="display:none;" required>
+                            <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
+                        </div>
+                        <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem;">Please select a school
+                            from the list.</p>
                         <div class="btn-group">
                             <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
+                            <button type="button" id="schoolNextBtn" class="btn-add" style="flex: 1;">Next</button>
                         </div>
                     </div>
 
@@ -240,28 +245,76 @@
         // Initial setup
         showStep(currentStep);
 
-        // Fetch USA colleges and populate datalist
-        document.addEventListener('DOMContentLoaded', function () {
-            var datalist = document.getElementById('collegesList');
-            if (datalist) {
-                // Using a known free public API for universities
-                fetch('http://universities.hipolabs.com/search?country=United+States')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Extract unique names
-                        const uniqueSchools = [...new Set(data.map(item => item.name))];
-                        // Sort alphabetically
-                        uniqueSchools.sort();
+        // --- Custom School Search Dropdown ---
+        var allSchools = [];
+        var schoolSearchInput = document.getElementById('schoolSearchInput');
+        var schoolInput = document.getElementById('schoolInput');
+        var schoolDropdown = document.getElementById('schoolDropdown');
+        var schoolError = document.getElementById('schoolError');
+        var schoolNextBtn = document.getElementById('schoolNextBtn');
 
-                        uniqueSchools.forEach(school => {
-                            var option = document.createElement('option');
-                            option.value = school;
-                            datalist.appendChild(option);
-                        });
-                    })
-                    .catch(err => console.error('Error fetching colleges:', err));
-            }
-        });
+        // Fetch schools from API
+        fetch('http://universities.hipolabs.com/search?country=United+States')
+            .then(r => r.json())
+            .then(data => {
+                allSchools = [...new Set(data.map(item => item.name))].sort();
+            })
+            .catch(() => { allSchools = []; });
+
+        function renderDropdown(query) {
+            schoolDropdown.innerHTML = '';
+            if (!query || query.length < 1) { schoolDropdown.style.display = 'none'; return; }
+            var filtered = allSchools.filter(s => s.toLowerCase().includes(query.toLowerCase())).slice(0, 8);
+            if (filtered.length === 0) { schoolDropdown.style.display = 'none'; return; }
+            filtered.forEach(function (school) {
+                var item = document.createElement('div');
+                item.className = 'school-dropdown-item';
+                // Bold-highlight the matching part
+                var idx = school.toLowerCase().indexOf(query.toLowerCase());
+                item.innerHTML = school.slice(0, idx)
+                    + '<strong>' + school.slice(idx, idx + query.length) + '</strong>'
+                    + school.slice(idx + query.length);
+                item.addEventListener('mousedown', function (e) {
+                    e.preventDefault();
+                    schoolSearchInput.value = school;
+                    schoolInput.value = school;
+                    schoolDropdown.style.display = 'none';
+                    schoolError.classList.add('hidden');
+                });
+                schoolDropdown.appendChild(item);
+            });
+            schoolDropdown.style.display = 'block';
+        }
+
+        if (schoolSearchInput) {
+            schoolSearchInput.addEventListener('input', function () {
+                // Clear hidden val when user edits text
+                schoolInput.value = '';
+                renderDropdown(this.value.trim());
+            });
+            schoolSearchInput.addEventListener('blur', function () {
+                setTimeout(() => { schoolDropdown.style.display = 'none'; }, 150);
+            });
+            schoolSearchInput.addEventListener('focus', function () {
+                if (this.value.trim()) renderDropdown(this.value.trim());
+            });
+        }
+
+        // Custom Next button for school step
+        if (schoolNextBtn) {
+            schoolNextBtn.addEventListener('click', function () {
+                if (!schoolInput.value.trim()) {
+                    schoolError.classList.remove('hidden');
+                    schoolSearchInput.focus();
+                    return;
+                }
+                schoolError.classList.add('hidden');
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            });
+        }
 
         document.querySelectorAll('.next-btn').forEach(btn => {
             btn.addEventListener('click', function (e) {
