@@ -43,19 +43,7 @@
         .bubble-blower-wrap {
             margin-left: calc(var(--max-x) * 0.02 + 4rem);
             margin-bottom: -1rem;
-            animation: floatBlower 4s ease-in-out infinite;
-        }
-
-        @keyframes floatBlower {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(-10deg);
-            }
-
-            50% {
-                transform: translateY(-8px) rotate(-15deg);
-            }
+            transform: rotate(-10deg);
         }
 
         .ob-bubble {
@@ -263,9 +251,14 @@
             <div class="bubble-blower-wrap">
                 <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#7BAFD4" stroke-width="1.5"
                     stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="7" r="5" stroke-width="2" />
-                    <path d="M12 12v9" stroke-width="2.5" />
-                    <path d="M9 21h6" stroke-width="2.5" />
+                    <!-- Top large loop -->
+                    <circle cx="12" cy="5" r="4.5" stroke-width="2" />
+                    <!-- Bottom small loop touching the top one -->
+                    <circle cx="12" cy="12.5" r="3" stroke-width="2" />
+                    <!-- Wand stick -->
+                    <path d="M12 15.5v6" stroke-width="2.5" />
+                    <!-- Handle base -->
+                    <path d="M9.5 21.5h5" stroke-width="2.5" />
                 </svg>
             </div>
 
