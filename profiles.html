@@ -23,12 +23,11 @@
             <h1 class="logo fade-in">Profiles</h1>
         </div>
 
-        <div class="profiles-container fade-in"
-            style="animation-delay: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 2rem 1rem; max-width: 600px; margin: 0 auto;">
+        <div class="profiles-container fade-in" style="animation-delay: 0.3s;">
 
             <!-- Profile 1 -->
-            <a href="user-profile.html?user=isabella" style="text-decoration: none; color: inherit; display: contents;">
-                <div class="profile-card" style="cursor: pointer;">
+            <a href="user-profile.html?user=isabella" class="profile-bubble-link">
+                <div class="profile-card">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
                             alt="Isabella">
@@ -41,8 +40,8 @@
             </a>
 
             <!-- Profile 2 -->
-            <a href="user-profile.html?user=liam" style="text-decoration: none; color: inherit; display: contents;">
-                <div class="profile-card" style="cursor: pointer;">
+            <a href="user-profile.html?user=liam" class="profile-bubble-link">
+                <div class="profile-card">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
                             alt="Liam">
@@ -55,8 +54,8 @@
             </a>
 
             <!-- Profile 3 -->
-            <a href="user-profile.html?user=sophia" style="text-decoration: none; color: inherit; display: contents;">
-                <div class="profile-card" style="cursor: pointer;">
+            <a href="user-profile.html?user=sophia" class="profile-bubble-link">
+                <div class="profile-card">
                     <div class="profile-img-wrap">
                         <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200"
                             alt="Sophia">
@@ -85,29 +84,26 @@
                 document.getElementById('navUserName').textContent = profile.name.split(' ')[0];
                 document.getElementById('navUserAvatar').textContent = profile.name.charAt(0).toUpperCase();
 
-                // Also add a card for the user in the feed
+                // Add a card for the user in the feed
                 const container = document.querySelector('.profiles-container');
                 if (container) {
                     const cardAnchor = document.createElement('a');
                     cardAnchor.href = 'my-profile.html';
-                    cardAnchor.style.textDecoration = 'none';
-                    cardAnchor.style.color = 'inherit';
-                    cardAnchor.style.display = 'contents';
+                    cardAnchor.className = 'profile-bubble-link';
 
                     cardAnchor.innerHTML = `
-                        <div class="profile-card" style="cursor: pointer; border: 2px solid rgba(75, 156, 211, 0.4); background: rgba(255, 255, 255, 0.85);">
+                        <div class="profile-card you-card">
                             <div class="profile-img-wrap" style="position: relative;">
                                 <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
                                     alt="${profile.name}">
-                                <div style="position: absolute; top: -10px; right: -10px; background: #4B9CD3; color: white; padding: 4px 10px; border-radius: 1rem; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">YOU</div>
+                                <div class="you-badge">YOU</div>
                             </div>
                             <h2 class="profile-name">${profile.name}, ${profile.age}</h2>
-                            <p class="profile-major">${profile.major}</p>
-                            <p class="profile-bio">${profile.bio || "No bio yet."}</p>
+                            <p class="profile-major">${profile.major || ''}</p>
+                            <p class="profile-bio">${profile.bio || 'No bio yet.'}</p>
                             <button class="btn-add btn-connect">My Profile</button>
                         </div>
                     `;
-                    // Prepend to show at the top of the feed
                     container.prepend(cardAnchor);
                 }
             }
