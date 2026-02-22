@@ -176,8 +176,11 @@ body {
 
 /* 3D bubble around text */
 .bubble-wrap {
-  display: inline-block;
-  padding: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   background: transparent;
   box-shadow: none;
