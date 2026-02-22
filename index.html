@@ -142,20 +142,24 @@
           logoTitle.classList.add('logo-done');
           if (bubbleWrap) bubbleWrap.classList.add('reveal');
           document.body.classList.add('bubble-done');
-          if (floatContainer) {
-            for (var b = 0; b < 18; b++) {
-              var el = document.createElement('div');
-              el.className = 'float-bubble';
-              el.style.left = Math.random() * 100 + '%';
-              el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
-              el.style.animationDelay = (Math.random() * 5) + 's';
-              el.style.animationDuration = (2 + Math.random() * 2) + 's';
-              floatContainer.appendChild(el);
-            }
-          }
         }
       }
-      setTimeout(type, 800);
+
+      // Start bubbles rising immediately as page loads
+      if (floatContainer) {
+        for (var b = 0; b < 18; b++) {
+          var el = document.createElement('div');
+          el.className = 'float-bubble';
+          el.style.left = Math.random() * 100 + '%';
+          el.style.width = el.style.height = (12 + Math.random() * 24) + 'px';
+          // Make initial ones start rising immediately or very soon
+          el.style.animationDelay = (Math.random() * 2) + 's';
+          el.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+          floatContainer.appendChild(el);
+        }
+      }
+      // Start typing slightly after bubbles begin rising
+      setTimeout(type, 400);
 
       // Handle main bubble click
       bubbleWrap.addEventListener('click', function (e) {
