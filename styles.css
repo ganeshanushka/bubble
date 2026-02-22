@@ -1247,14 +1247,15 @@ body {
   font-weight: 700;
 }
 
-/* Big Place Bubble */
+/* Big Place Bubble - map takes most of the screen */
 .place-bubble-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1.5rem auto 1rem;
+  margin: 0.5rem auto 1rem;
   width: 100%;
-  max-width: 600px;
+  max-width: none;
+  min-height: min(85vmin, 78vh);
   position: relative;
   opacity: 0;
   transform: translateY(20px) scale(0.95);
@@ -1269,7 +1270,8 @@ body {
 
 .massive-bubble {
   position: relative;
-  width: min(440px, 90vw);
+  width: min(85vmin, 82vw);
+  max-width: 720px;
   aspect-ratio: 1/1;
   border-radius: 50%;
   display: flex;
@@ -1352,9 +1354,9 @@ body {
 
 .feed-title {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #13294B;
-  margin: 2rem 0 1.5rem;
-  padding: 0 1.5rem;
+  margin: 1rem 0 0.75rem;
+  padding: 0 1rem;
 }
