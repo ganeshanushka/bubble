@@ -9,245 +9,366 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
-        /* Adjust popup for larger form */
-        .popup-box {
-            aspect-ratio: auto;
-            border-radius: 2rem;
-            padding: 3rem;
-            max-width: 500px;
-            min-height: 400px;
+        /* ---- Bubble Chain Onboarding ---- */
+        html,
+        body {
+            min-height: 100%;
+            background: linear-gradient(160deg, #dce9f5 0%, #eaf4fb 40%, #f0e9fa 70%, #e8f5ec 100%);
+        }
+
+        .ob-page {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
+            padding: 6rem 1rem 8rem;
+            gap: 3rem;
+            position: relative;
         }
 
-        .step-container {
-            display: none;
-            animation: slideUp 0.4s ease-out forwards;
+        /* Connecting line between bubbles */
+        .ob-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            background: linear-gradient(to bottom, rgba(123, 175, 212, 0.15), rgba(123, 175, 212, 0.4), rgba(123, 175, 212, 0.15));
+            z-index: 0;
         }
 
-        .step-container.active {
-            display: block;
+        .ob-bubble {
+            position: relative;
+            z-index: 1;
+            width: min(420px, 90vw);
+            background: radial-gradient(ellipse 90% 90% at 40% 30%, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.82));
+            border-radius: 2.5rem;
+            padding: 2.5rem 2.25rem 2rem;
+            box-shadow:
+                inset 0 0 16px rgba(255, 255, 255, 0.7),
+                inset 5px 0 24px rgba(75, 156, 211, 0.2),
+                inset -5px 0 24px rgba(123, 175, 212, 0.15),
+                0 8px 32px rgba(19, 41, 75, 0.10),
+                0 0 0 1.5px rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            transition: filter 0.5s ease, opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Upcoming (not yet reached) */
+        .ob-bubble.upcoming {
+            filter: blur(6px);
+            opacity: 0.45;
+            transform: scale(0.95);
+            pointer-events: none;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+        /* Answered (done) */
+        .ob-bubble.answered {
+            filter: blur(4px);
+            opacity: 0.5;
+            transform: scale(0.97);
+            pointer-events: none;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.5);
-            color: #333;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+        /* Active */
+        .ob-bubble.active {
+            filter: none;
+            opacity: 1;
+            transform: scale(1.02);
+            box-shadow:
+                inset 0 0 20px rgba(255, 255, 255, 0.8),
+                inset 6px 0 32px rgba(75, 156, 211, 0.3),
+                inset -6px 0 32px rgba(123, 175, 212, 0.2),
+                0 16px 48px rgba(75, 156, 211, 0.25),
+                0 0 0 2px rgba(123, 175, 212, 0.35);
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.8);
-            color: #000;
-        }
-
-        .question-title {
-            font-size: 1.5rem;
+        /* Bubble step number badge */
+        .ob-step-badge {
+            font-size: 0.72rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #000;
+            color: #7BAFD4;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        .ob-question {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #13294B;
             line-height: 1.3;
+            margin-bottom: 0.4rem;
         }
 
-        .question-desc {
-            color: #666;
-            margin-bottom: 1.5rem;
+        .ob-desc {
+            color: #667;
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ob-answer-display {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4B9CD3;
+            margin-top: 0.5rem;
+            min-height: 1.4em;
+        }
+
+        .ob-input-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .ob-input-row .bubble-input {
+            flex: 1;
+        }
+
+        .ob-next-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #7BAFD4, #4B9CD3);
+            color: white;
+            border: none;
+            border-radius: 2rem;
             font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+            margin-top: 1.1rem;
         }
 
-        .progress-bar {
+        .ob-next-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(75, 156, 211, 0.4);
+        }
+
+        .ob-submit-btn {
             width: 100%;
-            height: 6px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 3px;
-            margin-bottom: 2rem;
-            overflow: hidden;
+            margin-top: 1rem;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #7BAFD4, #4B9CD3);
+            color: white;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: #7BAFD4;
-            transition: width 0.3s ease;
+        .ob-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 156, 211, 0.4);
+        }
+
+        .ob-top-logo {
+            position: fixed;
+            top: 1.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: #13294B;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        /* School dropdown overrides for bubble chain */
+        .ob-school-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        textarea.bubble-input {
+            resize: none;
+            height: 90px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            font-family: inherit;
         }
     </style>
 </head>
 
 <body>
-    <div class="app-wrap">
-        <div class="hero">
-            <h1 class="logo logo-done">Bubble</h1>
-        </div>
-    </div>
-
-    <div id="floatBubbles" class="float-bubbles" style="display: none;"></div>
-    <!-- School dropdown rendered here on body to escape popup overflow:hidden -->
+    <a class="ob-top-logo" href="index.html">Bubble</a>
+    <!-- School dropdown rendered on body -->
     <div id="schoolDropdown" class="school-dropdown" style="display:none;"></div>
 
-    <!-- Onboarding Popup -->
-    <div class="popup-overlay fade-in">
-        <div class="popup-box">
-            <div class="text-left" style="width: 100%;">
+    <form id="onboardingForm" novalidate>
+        <div class="ob-page">
 
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
+            <!-- Bubble 1: Name -->
+            <div class="ob-bubble active" id="ob-bubble-1">
+                <div class="ob-step-badge">Step 1 of 8</div>
+                <div class="ob-question">What's your full name?</div>
+                <div class="ob-desc">So your matches know who you are.</div>
+                <div class="ob-input-row">
+                    <input type="text" id="nameInput" class="bubble-input" placeholder="e.g. Jane Doe"
+                        autocomplete="name">
+                    <button type="button" class="ob-next-btn" data-step="1">Next →</button>
                 </div>
-
-                <form id="onboardingForm" class="login-form" novalidate>
-                    <!-- Step 1: Name -->
-                    <div class="step-container active" id="ob-step-1">
-                        <h2 class="question-title">What's your full name?</h2>
-                        <p class="question-desc">So your matches know who you are.</p>
-                        <input type="text" id="nameInput" class="bubble-input" placeholder="e.g. Jane Doe" required>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Age -->
-                    <div class="step-container" id="ob-step-2">
-                        <h2 class="question-title">How old are you?</h2>
-                        <p class="question-desc">You must be at least 18 to use Bubble.</p>
-                        <input type="number" id="ageInput" class="bubble-input" min="18" max="150" placeholder="e.g. 21"
-                            required>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Gender -->
-                    <div class="step-container" id="ob-step-3">
-                        <h2 class="question-title">How do you identify?</h2>
-                        <p class="question-desc">This helps us organize your discover feed.</p>
-                        <select id="genderInput" class="bubble-input" required style="appearance: none;">
-                            <option value="" disabled selected>Select gender</option>
-                            <option value="Woman">Woman</option>
-                            <option value="Man">Man</option>
-                            <option value="Non-binary">Non-binary</option>
-                            <option value="Prefer not to say">Prefer not to say</option>
-                        </select>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Secondary Email -->
-                    <div class="step-container" id="ob-step-4">
-                        <h2 class="question-title">Any secondary email?</h2>
-                        <p class="question-desc">For when your unc email expires.</p>
-                        <input type="email" id="secondaryEmailInput" class="bubble-input"
-                            placeholder="e.g. personal@gmail.com" required>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Phone Number -->
-                    <div class="step-container" id="ob-step-5">
-                        <h2 class="question-title">What's your phone number?</h2>
-                        <p class="question-desc">We use SMS to verify real students.</p>
-                        <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555" required>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 6: School -->
-                    <div class="step-container" id="ob-step-6">
-                        <h2 class="question-title">What school do you attend?</h2>
-                        <p class="question-desc">Help us find students on your campus.</p>
-                        <!-- Custom school search dropdown -->
-                        <div class="school-search-wrap" style="position: relative; width: 100%;">
-                            <input type="text" id="schoolSearchInput" class="bubble-input" autocomplete="off"
-                                placeholder="Search for your college..." style="width: 100%; box-sizing: border-box;">
-                            <!-- Hidden input holds the confirmed selected value -->
-                            <input type="text" id="schoolInput" style="display:none;">
-                            <!-- Dropdown is rendered on body to escape overflow:hidden -->
-                        </div>
-                        <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem;">Please select a school
-                            from the list.</p>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" id="schoolNextBtn" class="btn-add" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 7: Major -->
-                    <div class="step-container" id="ob-step-7">
-                        <h2 class="question-title">What's your major?</h2>
-                        <p class="question-desc">Find peers with similar academic interests.</p>
-                        <input type="text" id="majorInput" class="bubble-input" placeholder="e.g. Computer Science"
-                            required>
-                        <div class="btn-group">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="button" class="btn-add next-btn" style="flex: 1;">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 8: Bio -->
-                    <div class="step-container" id="ob-step-8">
-                        <h2 class="question-title">Tell us about yourself</h2>
-                        <p class="question-desc">Write a short bio for your profile card.</p>
-                        <textarea id="bioInput" class="bubble-input"
-                            style="height: 100px; resize: none; width: 100%; border-radius: 1rem; padding: 1rem;"
-                            placeholder="Coffee addict, hackathon lover..."></textarea>
-                        <div class="btn-group" style="margin-top: 1rem;">
-                            <button type="button" class="btn-add btn-secondary back-btn">Back</button>
-                            <button type="submit" class="btn-add" style="flex: 1;">Complete Profile</button>
-                        </div>
-                    </div>
-                </form>
-
+                <div class="ob-answer-display" id="ans-1"></div>
             </div>
+
+            <!-- Bubble 2: Age -->
+            <div class="ob-bubble upcoming" id="ob-bubble-2">
+                <div class="ob-step-badge">Step 2 of 8</div>
+                <div class="ob-question">How old are you?</div>
+                <div class="ob-desc">You must be at least 18 to use Bubble.</div>
+                <div class="ob-input-row">
+                    <input type="number" id="ageInput" class="bubble-input" min="18" max="99" placeholder="e.g. 21">
+                    <button type="button" class="ob-next-btn" data-step="2">Next →</button>
+                </div>
+                <div class="ob-answer-display" id="ans-2"></div>
+            </div>
+
+            <!-- Bubble 3: Gender -->
+            <div class="ob-bubble upcoming" id="ob-bubble-3">
+                <div class="ob-step-badge">Step 3 of 8</div>
+                <div class="ob-question">How do you identify?</div>
+                <div class="ob-desc">This helps us organize your discover feed.</div>
+                <div class="ob-input-row">
+                    <select id="genderInput" class="bubble-input" style="appearance:none;">
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="Woman">Woman</option>
+                        <option value="Man">Man</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <button type="button" class="ob-next-btn" data-step="3">Next →</button>
+                </div>
+                <div class="ob-answer-display" id="ans-3"></div>
+            </div>
+
+            <!-- Bubble 4: Secondary Email -->
+            <div class="ob-bubble upcoming" id="ob-bubble-4">
+                <div class="ob-step-badge">Step 4 of 8</div>
+                <div class="ob-question">Any secondary email?</div>
+                <div class="ob-desc">For when your .edu email expires.</div>
+                <div class="ob-input-row">
+                    <input type="email" id="secondaryEmailInput" class="bubble-input"
+                        placeholder="e.g. personal@gmail.com">
+                    <button type="button" class="ob-next-btn" data-step="4">Next →</button>
+                </div>
+                <div class="ob-answer-display" id="ans-4"></div>
+            </div>
+
+            <!-- Bubble 5: Phone -->
+            <div class="ob-bubble upcoming" id="ob-bubble-5">
+                <div class="ob-step-badge">Step 5 of 8</div>
+                <div class="ob-question">What's your phone number?</div>
+                <div class="ob-desc">We use SMS to verify real students.</div>
+                <div class="ob-input-row">
+                    <input type="tel" id="phoneInput" class="bubble-input" placeholder="(555) 555-5555">
+                    <button type="button" class="ob-next-btn" data-step="5">Next →</button>
+                </div>
+                <div class="ob-answer-display" id="ans-5"></div>
+            </div>
+
+            <!-- Bubble 6: School -->
+            <div class="ob-bubble upcoming" id="ob-bubble-6">
+                <div class="ob-step-badge">Step 6 of 8</div>
+                <div class="ob-question">What school do you attend?</div>
+                <div class="ob-desc">Help us find students on your campus.</div>
+                <div class="ob-school-wrap">
+                    <input type="text" id="schoolSearchInput" class="bubble-input" autocomplete="off"
+                        placeholder="Search for your college..." style="width:100%; box-sizing:border-box;">
+                    <input type="text" id="schoolInput" style="display:none;">
+                </div>
+                <p id="schoolError" class="error-msg hidden" style="margin-top:0.4rem; font-size:0.82rem;">Please select
+                    a school from the list.</p>
+                <button type="button" class="ob-next-btn" id="schoolNextBtn" style="margin-top:1.1rem; width:100%;">Next
+                    →</button>
+                <div class="ob-answer-display" id="ans-6"></div>
+            </div>
+
+            <!-- Bubble 7: Major -->
+            <div class="ob-bubble upcoming" id="ob-bubble-7">
+                <div class="ob-step-badge">Step 7 of 8</div>
+                <div class="ob-question">What's your major?</div>
+                <div class="ob-desc">Find peers with similar academic interests.</div>
+                <div class="ob-input-row">
+                    <input type="text" id="majorInput" class="bubble-input" placeholder="e.g. Computer Science">
+                    <button type="button" class="ob-next-btn" data-step="7">Next →</button>
+                </div>
+                <div class="ob-answer-display" id="ans-7"></div>
+            </div>
+
+            <!-- Bubble 8: Bio -->
+            <div class="ob-bubble upcoming" id="ob-bubble-8">
+                <div class="ob-step-badge">Step 8 of 8</div>
+                <div class="ob-question">Tell us about yourself</div>
+                <div class="ob-desc">Write a short bio for your profile card.</div>
+                <textarea id="bioInput" class="bubble-input" placeholder="Coffee addict, hackathon lover..."></textarea>
+                <button type="submit" class="ob-submit-btn">Complete Profile ✓</button>
+            </div>
+
         </div>
-    </div>
+    </form>
 
     <script src="app.js"></script>
     <script>
         document.body.classList.add('bubble-done');
 
-        // Typeform logic
         var currentStep = 1;
         var totalSteps = 8;
-        var progressFill = document.getElementById('progressFill');
 
-        function showStep(step) {
-            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
-            document.getElementById('ob-step-' + step).classList.add('active');
-            progressFill.style.width = ((step / totalSteps) * 100) + '%';
+        function getBubble(n) { return document.getElementById('ob-bubble-' + n); }
+        function getAns(n) { return document.getElementById('ans-' + n); }
 
-            // Focus first input
-            setTimeout(() => {
-                var input = document.getElementById('ob-step-' + step).querySelector('input, select');
-                if (input) input.focus();
-            }, 100);
+        function advanceTo(n) {
+            // Mark all previous as answered
+            for (var i = 1; i < n; i++) {
+                getBubble(i).classList.remove('active', 'upcoming');
+                getBubble(i).classList.add('answered');
+            }
+            // Mark current as active
+            var cur = getBubble(n);
+            cur.classList.remove('upcoming', 'answered');
+            cur.classList.add('active');
+            // Mark upcoming
+            for (var j = n + 1; j <= totalSteps; j++) {
+                getBubble(j).classList.remove('active', 'answered');
+                getBubble(j).classList.add('upcoming');
+            }
+            currentStep = n;
+            // Scroll into view with a small delay for blur transition
+            setTimeout(function () {
+                cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Focus first input in active bubble
+                var inp = cur.querySelector('input:not([style*="display:none"]), select, textarea');
+                if (inp) inp.focus();
+            }, 300);
         }
 
-        // Initial setup
-        showStep(currentStep);
+        // Generic next-btn handler
+        document.querySelectorAll('.ob-next-btn[data-step]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var step = parseInt(this.dataset.step);
+                var bubble = getBubble(step);
+                var input = bubble.querySelector('input:not([style*="display:none"]), select');
+                if (!input || !input.value.trim()) {
+                    input && input.focus();
+                    input && (input.style.outline = '2px solid #e86');
+                    setTimeout(function () { if (input) input.style.outline = ''; }, 1000);
+                    return;
+                }
+                // Show answer summary in bubble
+                getAns(step).textContent = '✓ ' + input.value;
+                if (step < totalSteps) advanceTo(step + 1);
+            });
+        });
 
-        // --- Custom School Search Dropdown ---
+        // --- School dropdown ---
         var FALLBACK_SCHOOLS = [
             "Auburn University", "Arizona State University", "Boston College", "Boston University",
             "Brigham Young University", "Brown University", "California Institute of Technology",
@@ -284,14 +405,12 @@
         var schoolError = document.getElementById('schoolError');
         var schoolNextBtn = document.getElementById('schoolNextBtn');
 
-        // Try to augment with API data
         fetch('http://universities.hipolabs.com/search?country=United+States')
             .then(r => r.json())
             .then(data => {
-                var apiSchools = [...new Set(data.map(item => item.name))];
-                allSchools = [...new Set([...FALLBACK_SCHOOLS, ...apiSchools])].sort();
-            })
-            .catch(() => { /* keep fallback */ });
+                var api = [...new Set(data.map(i => i.name))];
+                allSchools = [...new Set([...FALLBACK_SCHOOLS, ...api])].sort();
+            }).catch(() => { });
 
         function positionDropdown() {
             var rect = schoolSearchInput.getBoundingClientRect();
@@ -302,26 +421,14 @@
 
         function renderDropdown(query) {
             schoolDropdown.innerHTML = '';
-            if (!query || query.length < 1) { schoolDropdown.style.display = 'none'; return; }
-            if (allSchools.length === 0) {
-                var loading = document.createElement('div');
-                loading.className = 'school-dropdown-item';
-                loading.textContent = 'Loading schools...';
-                loading.style.color = '#999';
-                schoolDropdown.appendChild(loading);
-                positionDropdown();
-                schoolDropdown.style.display = 'block';
-                return;
-            }
+            if (!query) { schoolDropdown.style.display = 'none'; return; }
             var filtered = allSchools.filter(s => s.toLowerCase().includes(query.toLowerCase())).slice(0, 8);
-            if (filtered.length === 0) { schoolDropdown.style.display = 'none'; return; }
+            if (!filtered.length) { schoolDropdown.style.display = 'none'; return; }
             filtered.forEach(function (school) {
                 var item = document.createElement('div');
                 item.className = 'school-dropdown-item';
                 var idx = school.toLowerCase().indexOf(query.toLowerCase());
-                item.innerHTML = school.slice(0, idx)
-                    + '<strong>' + school.slice(idx, idx + query.length) + '</strong>'
-                    + school.slice(idx + query.length);
+                item.innerHTML = school.slice(0, idx) + '<strong>' + school.slice(idx, idx + query.length) + '</strong>' + school.slice(idx + query.length);
                 item.addEventListener('mousedown', function (e) {
                     e.preventDefault();
                     schoolSearchInput.value = school;
@@ -335,89 +442,33 @@
             schoolDropdown.style.display = 'block';
         }
 
-        if (schoolSearchInput) {
-            schoolSearchInput.addEventListener('input', function () {
-                schoolInput.value = '';
-                renderDropdown(this.value.trim());
-            });
-            schoolSearchInput.addEventListener('blur', function () {
-                setTimeout(() => { schoolDropdown.style.display = 'none'; }, 150);
-            });
-            schoolSearchInput.addEventListener('focus', function () {
-                if (this.value.trim()) renderDropdown(this.value.trim());
-            });
-        }
+        schoolSearchInput.addEventListener('input', function () { schoolInput.value = ''; renderDropdown(this.value.trim()); });
+        schoolSearchInput.addEventListener('blur', function () { setTimeout(() => { schoolDropdown.style.display = 'none'; }, 150); });
+        schoolSearchInput.addEventListener('focus', function () { if (this.value.trim()) renderDropdown(this.value.trim()); });
 
-        // Custom Next button for school step
-        if (schoolNextBtn) {
-            schoolNextBtn.addEventListener('click', function () {
-                if (!schoolInput.value.trim()) {
-                    schoolError.classList.remove('hidden');
-                    schoolSearchInput.focus();
-                    return;
-                }
-                schoolError.classList.add('hidden');
-                if (currentStep < totalSteps) {
-                    currentStep++;
-                    showStep(currentStep);
-                }
-            });
-        }
-
-        document.querySelectorAll('.next-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                // Native HTML5 validation
-                var currentInput = document.getElementById('ob-step-' + currentStep).querySelector('input, select');
-                if (currentInput && !currentInput.reportValidity()) return;
-
-                if (currentStep < totalSteps) {
-                    currentStep++;
-                    showStep(currentStep);
-                }
-            });
-        });
-
-        document.querySelectorAll('.back-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                if (currentStep > 1) {
-                    currentStep--;
-                    showStep(currentStep);
-                }
-            });
-        });
-
-        // Handle enter key to go next
-        document.getElementById('onboardingForm').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-                var currentInput = document.getElementById('ob-step-' + currentStep).querySelector('input, select');
-                if (currentStep === 6) return; // School step has its own button handler
-                if (currentInput && !currentInput.value.trim()) { currentInput.focus(); return; }
-
-                if (currentStep < totalSteps) {
-                    currentStep++;
-                    showStep(currentStep);
-                } else if (currentStep === totalSteps) {
-                    document.getElementById('onboardingForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-                }
+        schoolNextBtn.addEventListener('click', function () {
+            if (!schoolInput.value.trim()) {
+                schoolError.classList.remove('hidden');
+                schoolSearchInput.focus();
+                return;
             }
+            schoolError.classList.add('hidden');
+            getAns(6).textContent = '✓ ' + schoolInput.value;
+            advanceTo(7);
         });
 
+        // Submit
         document.getElementById('onboardingForm').addEventListener('submit', function (e) {
             e.preventDefault();
             var bio = document.getElementById('bioInput').value.trim();
-            if (!bio) {
-                document.getElementById('bioInput').focus();
-                return;
-            }
-            // Save profile data
-            const profileData = {
+            if (!bio) { document.getElementById('bioInput').focus(); return; }
+            var profileData = {
                 name: document.getElementById('nameInput').value,
                 age: document.getElementById('ageInput').value,
                 gender: document.getElementById('genderInput').value,
                 secondaryEmail: document.getElementById('secondaryEmailInput').value,
                 phone: document.getElementById('phoneInput').value,
-                school: document.getElementById('schoolInput').value,
+                school: schoolInput.value,
                 major: document.getElementById('majorInput').value,
                 bio: bio
             };
